@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: DFS | OZ&#39;s notes on Machine Learning</title>
+  <title>Recsys - 阿里巴巴B2B算法实战 | OZ&#39;s notes on Machine Learning</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="OZ&#39;s notes on Machine Learning">
-<meta property="og:url" content="http://example.com/tags/DFS/index.html">
+  <meta name="description" content="根据图书“阿里巴巴B2B算法实战” 做的一些笔记摘要。  工程系统 –BE向量召回：– 将元素（实体）通过向量化构建高效检索的索引。 在检索端同样方式向量化，利用检索技术进行召回，得到距离相近的商品集合，并且根据距离排序。底层向量索引和检索技术由达摩院研发，封装，用于词向量和短文本向量召回。同时也应用在文本搜索场景下文本匹配不足的问题。 –RTP：– rank service, 功能更多的tf-s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Recsys - 阿里巴巴B2B算法实战">
+<meta property="og:url" content="http://example.com/2021/06/18/recsys_alibaba/index.html">
 <meta property="og:site_name" content="OZ&#39;s notes on Machine Learning">
+<meta property="og:description" content="根据图书“阿里巴巴B2B算法实战” 做的一些笔记摘要。  工程系统 –BE向量召回：– 将元素（实体）通过向量化构建高效检索的索引。 在检索端同样方式向量化，利用检索技术进行召回，得到距离相近的商品集合，并且根据距离排序。底层向量索引和检索技术由达摩院研发，封装，用于词向量和短文本向量召回。同时也应用在文本搜索场景下文本匹配不足的问题。 –RTP：– rank service, 功能更多的tf-s">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-17T17:22:49.003Z">
+<meta property="article:modified_time" content="2021-06-17T17:33:50.756Z">
 <meta property="article:author" content="OZ">
+<meta property="article:tag" content="recsys">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="OZ&#39;s notes on Machine Learning" type="application/atom+xml">
@@ -168,453 +173,374 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-recsys_alibaba" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Recsys - 阿里巴巴B2B算法实战
+    </h1>
+  
+
+        
+        <a href="/2021/06/18/recsys_alibaba/" class="archive-article-date">
+  	<time datetime="2021-06-17T17:22:49.003Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-18</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+		
+
+			
+				<p>根据图书“阿里巴巴B2B算法实战” 做的一些笔记摘要。</p>
+<hr>
+<p>工程系统</p>
+<p>–BE向量召回：– 将元素（实体）通过向量化构建高效检索的索引。 在检索端同样方式向量化，利用检索技术进行召回，得到距离相近的商品集合，并且根据距离排序。底层向量索引和检索技术由达摩院研发，封装，用于词向量和短文本向量召回。同时也应用在文本搜索场景下文本匹配不足的问题。</p>
+<p>–RTP：– rank service, 功能更多的tf-serving 封装，对搜索和推荐业务打分和排序。RTP把权重和网络结构分发和加载在内存，网络结构支持小时更新，参数和权重支持实时更新。在内部实现上，RTP将模型拆分，对图进行转化，将training grapha转成inference graph。添加placeholder，用于外部请求数据输入； feature generator用于特征生成。特征生成和本地内容表关联，执行时候检索本地表，获得商品维度数据生成特征。Loss节点删除。</p>
+<p>实时数据工程：实时数据分层汇总成实时数据，公共明细层，应用数据层；</p>
+<p>搜索算法<br>Query查询理解：主要解决三个问题：<br>    1. 用户输入Query后 - Query类目预测<br>    2. 用户输入Query错误或者表达模糊 - Query改写<br>    3. 用户输入Query简单或者尚未输入时 - Query推荐</p>
+<p>Query类目预测<br>场景： </p>
+<ul>
+<li>商品类目采用多层结构，比如：女装-》大码女装-》大码T恤。 本质师分类任务</li>
+<li>搜索及搜索广告从召回到精排， 快速定位重点类目，在排序中保证商品和搜索词的相关性</li>
+<li>搜索导购类服务： 类目导航、风向标</li>
+<li>商家新品发布时，根据标题进行类目推荐，提高发布效率<span id="more"></span>
+预测模型</li>
+<li>基于用户行为的类目预测<ul>
+<li>根据用户点击的商品，将搜索词和类目关联，统计每个词下每个类目点击次数，归一化，算出类目偏好概率； 为了时效性，根据日志时间衰减加权</li>
+<li>优缺点：在高频搜索词下效果好，对于稀疏数据，统计结果不准确，容易循环反馈造成马太效应。</li>
+</ul>
+</li>
+<li>基于文本相关性的类目预测<ul>
+<li>方法一：NB<ul>
+<li>将商品标题分词和真实类目建立关系，用Naive Bayes（NB）判断</li>
+<li>优缺点：NB假设特征互相独立，但事实不是，比如手机和电池常常同时出现，需要同时表述</li>
+</ul>
+</li>
+<li>方法二：贝叶斯网络 - 概率图模型<ul>
+<li>商品标题分词后，加入网络，每个分词做节点，有依赖关系的词用箭头链接，用Drichlet分布计算商品和词节点的概率关系</li>
+<li>通过拓扑排序把树结构变成有向无环图，从而计算条件概率。最后，通过drichelet函数对结果拟合。</li>
+<li>预测：每个关键词，查询网络，提取不独立的词分成多词特征，剩下的词为单词特征，查询条件概率并相乘得到归属各类目的概率分布</li>
+</ul>
+</li>
+<li>文本相关性归档<ul>
+<li>基于文本相关性和用户行为的相关，加权求搜索词在类目下的概率（基于用户行为反馈预测概率-w1 + 文本相关性的类目预测概率-w2）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Query改写</p>
+<ul>
+<li>常规改写：停用词处理→归一化→纠错改写→同义词替换→丢词改写<ul>
+<li>纠错改写：<ul>
+<li>HMM: 真实输入作为观测序列，最有隐藏状态作为改写后的结果。<ul>
+<li>语言模型：n-gram。 对于每个语言单位，利用前面n-1个单位预测当前语言单位，通过最大似然进行参数估计</li>
+<li> 纠错模型：通过用户最近几次搜索词加上约束条件作为标注，将搜索词分词对齐后，通过统计，计算正确搜索短语下误写的概率</li>
+</ul>
+</li>
+<li>同义词扩展：<ul>
+<li>基于文档共现：通过query和相关文档（类目、商品标题、详情页面）的特征（熵、TF-IDF、标签，词权重）的相关性</li>
+<li>基于日志统计：计算query之间的相关度（文本距离，word2vec的embedding距离）</li>
+<li>基于用户行为：统计同session内的query相似度，取出高置信度的同义词</li>
+</ul>
+</li>
+<li>语义改写<ul>
+<li>同义词的问题： 苹果和苹果手机，无法解决描述词（新款和爆款）</li>
+<li>改写目标：搜索词→搜索词1 OR搜索词2 OR（搜索词3 AND标签）</li>
+<li>规则和聚类挖掘</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Query推荐</p>
+<ul>
+<li>首页底纹： 计算每个term的embedding向量、它们在query和title的权重，通过word2vec得到term vec和图计算得到query和title的向量表征；用卷积聚合算法做推荐<ul>
+<li>卷积聚合： 先建立grapha二阶邻居节点（user-&gt;query-&gt;offer)，然后定义聚合路径user→（search→）query→（click→）offer。（非监督学习，反向模拟CANE算法）。</li>
+<li>基于query和title分词结果预先训练（embedding（64维）和权重指示函数pooling），根据attention权重聚合得到最终query和title embedding。在线检索逻辑是聚合用户一次搜索窗口query下点击的商品行为，根据title embedding计算用户偏好，根据embedding向量相似度在线召回query<ul>
+<li>效果对比：宠物推毛剪， word2vec召回宠物和推毛剪的同义词，deepwalk召回相关词（美容剪等），graph召回美容梳、吹风机等，发现性更好。</li>
+<li>召回核心： 1）必须有核心词 2）去除作弊词 3）归一权重 4）query长尾分布，保留热度高的title，减少计算</li>
+</ul>
+</li>
+<li>搜索锦囊：细选、榜单等<ul>
+<li>场景：<ul>
+<li>商品固有信息： 商品标题和CPV信息（类目-属性-属性值）</li>
+<li>相对于query，标题属于长文本</li>
+<li>tag数量达，提取核心tag，提取信息熵高的tag</li>
+</ul>
+</li>
+<li>对query下点击cpv分布统计，向用户展示最核心的cpv</li>
+<li>长文本采用分词算法提取term，做识别tag，用bilstm-crf，对tag做排序，排在前面的通常是通用词，用tf-idf提取有效的tag</li>
+<li>输入lstm的word2vec向量word embedding</li>
+<li>桥接模式设计，多样式卡片提供数据，只需要增加配置样式</li>
+</ul>
+</li>
+<li>个性化热词<ul>
+<li>根据用户点击行为推荐</li>
+<li>i2q召回然后用bfs排序（item2query）<ul>
+<li>离线阶段： 根据用户搜索点击日志生成i2q召回词表；根据userid， itemid，i2q召回itemid的query，和cateid</li>
+<li>在线阶段：bfs查询，保证多样</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>大促会场热词<ul>
+<li>根据会场，query类目</li>
+</ul>
+</li>
+<li>Query生成<ul>
+<li>场景：清洗后query只有上百万，商品有几亿，query库很难完全表征商品，需要扩展</li>
+<li>seq2seq生成<ul>
+<li>以用户点击后，二次搜索作为label，训练</li>
+<li>初步尝试，预测分散搭配不当。根据深度学习的集聚效应，通过构建样本和标签的关联，提高rounge</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>搜索排序：销量、价格、综合</p>
+<ul>
+<li>场景：平衡买家体验（缩短购物路径）、卖家收益（引导目标买家进入商品页），平台发展（全站卖家利益平衡）</li>
+<li>模型历史：用户基础标签-》大规模机器学习和实时特征-》推荐融入搜索-》深度学习精细建模</li>
+<li>召回<ul>
+<li>倒排索引：对每个商品子单元建立索引，初筛</li>
+<li>词召回：倒排索引建立；用召回分数截断；类目预测限制类目召回数，避免类目倾斜</li>
+<li>向量召回：传统文本相似算法很难找回query-doc（儿童用品和玩具，数码产品和耳机）<ul>
+<li>深度学习：微软的DSSM（deep structured sematic model），2016年的youtube的deep match（候选集产生、再排序）</li>
+</ul>
+</li>
+<li>个性化召回<ul>
+<li>对用户的实时行为序列进行了建模，模型利用了用户的Query词对行为序列上面的所有商品进行Attention学习，同时为了突出每个行为类型及行为发生时间的不同权重，再基于context特征对行为序列进行建模。具体体现为引入了一个分层的Attention网络对模型进行建模<ul>
+<li>query和item-info做attention</li>
+<li>context和item-info做attetion</li>
+</ul>
+</li>
+<li>多路召回<ul>
+<li>基于用户历史行为（收藏点击）I2I召回</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>粗排：<ul>
+<li>LR：原理 + 正则化</li>
+<li>GBDT + LR：原理</li>
+</ul>
+</li>
+<li>精排：海量用户行为反馈建模；要求精准（降低badcase），可控（根据业务目标调整）；<ul>
+<li>特征：页面满意度，商品质量，反作弊模型，商品质量，CTR、CVR预测</li>
+<li>CTR预估<ul>
+<li>特征工程：用户（身份、喜好、足迹）、商品（类目、标签、材质、转化率、统计次数、销量、评价）、查询词、上下文（时间、地点、系统）、组合特征</li>
+<li>模型：人工+GBDT + LR -》深度学习；深度学习对特征工程要求低</li>
+<li>深度学习：<ul>
+<li>要求：兼顾记忆（query-item，user-item权重）、泛化（学习出样本中很少的模式）</li>
+<li>解决方案： FM和DNN结合<ul>
+<li>并行方式： wide deep</li>
+<li>串行：FM基础一次项和二次项作为dnn输入学习</li>
+<li>用group auc评估：weight：是查询词权重，auc是每个查询词下样本auc</li>
+</ul>
+</li>
+<li>特征预处理：<ul>
+<li>低纬度离散：查表方式编码 -》 embedding</li>
+<li>高纬度离散：长尾特征明显（比如商品id）：高频率用查表方式替换数字；低频hash方式随机分配数字，然后onehot2dense转换，embedding向量</li>
+<li>统计型连续：等频分桶离散化-》embedding（基于特征域embedding向量再和特征相乘进行逐元素的向量加权）</li>
+<li>比率型连续：wilson区间法修正</li>
+</ul>
+</li>
+<li>模型网络：<ul>
+<li>问题： 不是任意特征交叉都有意义，去除无效特征可以提高鲁棒性；分组网络：避免所有embedding维度一致</li>
+<li>FM模型原理（page185）</li>
+<li>transformer（page187）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>CVR<ul>
+<li>多任务：和CTR共享底层embedding</li>
+<li>联合训练</li>
+</ul>
+</li>
+<li>LTR：<ul>
+<li>point wise， pair wise和list wise</li>
+<li>ranksvm</li>
+<li>优缺点：特征组合线性；样本选择简单</li>
+<li>核心也进化成了wide&amp;deep</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>召回 （万级别商品） -》 粗排（千级别商品）-》精排</li>
+</ul>
+</li>
+</ul>
+<p>搜索部分总结：<br>    - 一个好的搜索引擎包括几个方面<br>        - 准确多元的query识别：分类问题<br>        - 召回：多元<br>        - 排序：精确和泛化<br>    - 模型要求：向量召回，wide&amp;deep，fm，attention，embedding， graph models<br>    - 搜索更侧重query词相关性，推荐更侧重用户画像</p>
+<p>推荐算法： （几千万） -》 召回（几千） -》 粗排（一千）</p>
+<ul>
+<li>发展历程：<ul>
+<li>2017年召回（协同过滤Swing和E-trec），排序（GBDT+LR升级到wide&amp;deep），unbalance i2i做小商品池推荐</li>
+<li>2018年召回（embedding i2i和deepmatch），排序（DIN和DIEN）</li>
+<li>2019年召回（多兴趣+粗排），排序（DMR），CVR（ESMM+MMOE）多目标，直播和短视频内容推荐</li>
+</ul>
+</li>
+<li>召回<ul>
+<li>协同过滤：基于规则、记忆存储<ul>
+<li>基于用户：用户相似度计算，评分</li>
+<li>基于物品：物品相似度，评分</li>
+</ul>
+</li>
+<li>embedding i2i：在线部署简单，应用广泛；但是只局限在’用户-商品对’的历史交互<ul>
+<li>通过模型学习拟合数据，得到商品的embedding -》 向量召回</li>
+<li>deep walk</li>
+<li>word2vec: 用户网站商品行为+商品类目训练embbeding，叫item2vec；收敛快、可用于冷启动；增加属性，训练数量翻倍，用采样解决</li>
+</ul>
+</li>
+<li>deepmatch(page 215)<ul>
+<li>解决embedding问题： 新用户冷启动； 难以利用属性；复杂客户行为； 用户兴趣分布（长短期）</li>
+<li>google DNN4YouTube</li>
+<li>离线训练： 本地用30天内用户行为和商品特征预测最后一次点击商品，输出训练中的item_vector, 商品特征导入iGraph做向量召回；</li>
+<li>线上：获取用户足迹，商品特征，构建行为特征序列，输入模型； 在调用RTP，获得用户向量，相对商品向量表做最近邻查询，得到topK</li>
+<li>UV-CTR提升0.92%， 人均点击次数提升9.8%，PV-CTR提升2.6%， L-O转化提升1.3%， 发现曝光提升8%（15天为点击类目）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>排序<ul>
+<li>wide&amp;deep<ul>
+<li>特征： 用户特征（买家）， 商品特征（行业类目）， 用户-商品交叉，上下文（召回来源）</li>
+</ul>
+</li>
+<li>DIN：用户行为表征为兴趣</li>
+<li>DIEN：使用兴趣抽取层和兴趣演化层</li>
+<li>DMR：User-to-Item网络 + Item-to-Item网络</li>
+<li>ESMM</li>
+<li>MMoE: google 2018 KDD<ul>
+<li>特征处理：<ul>
+<li>用户兴趣向量：multi-head attention</li>
+</ul>
+</li>
+<li>离线：loss修正AUC提升</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>名词</p>
+<ul>
+<li>rouge（Recall-Oriented Understudy for Gisting Evaluation）： 自动摘要评价方法</li>
+<li>CPV (Cost Per View):是指按照显示效果付费； 或者： CPV - 用户感知价值PV - 每天有多少网页被打开的次数，比如客户进入淘宝，看了三条产品，每条产品一个页面，总共贡献PV4 （首页 + 产品1 + 产品2 + 产品3）。同一个人浏览同一个页面不会重复计算pv，点100次也算1次。</li>
+<li>UV - 独立访问次数。 PV/UV 一般在2到3，过低，说明浏览深度过浅。</li>
+<li>展现量：宝贝被买家看到的次数。</li>
+<li>跳失率：在关键词带来的所有入店次数中，只访问一个页面就离开的访问次数占比。</li>
+</ul>
+
+			
+		
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/17/leetcode_297/" class="archive-article-date">
-  	<time datetime="2021-06-17T10:28:06.382Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/17/leetcode_297/">Leetcode 297 -Serialize and Deserialize Binary Tree</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BFS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Leetcode-Hard</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">recsys</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
+        			<a href="/categories/machinelearning//" class="article-tag-list-link color1">machinelearning</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/17/leetcode_700/" class="archive-article-date">
-  	<time datetime="2021-06-17T07:57:02.670Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2021/06/18/recsys_paper_reading_airbnb/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Recsys - Paper Reading - Real-time Personalization at Airbnb
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/06/18/nlp_word2vec/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">NLP - word2vec</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/17/leetcode_700/">Leetcode 700 - Search in a Binary Search Tree</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BST</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Backtracking</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Leetcode-Easy</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    目录，不存在的…
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/17/leetcode_669/" class="archive-article-date">
-  	<time datetime="2021-06-17T07:51:38.805Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/17/leetcode_669/">Leetcode 669 - Trim a Binary Search Tree</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BST</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Backtracking</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Leetcode-Medium</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/17/leetcode_235/" class="archive-article-date">
-  	<time datetime="2021-06-17T07:43:06.970Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/17/leetcode_235/">Leetcode 235 - Lowest Common Ancestor of a Binary Search Tree</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BST</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Leetcode-Easy</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/17/leetcode_230/" class="archive-article-date">
-  	<time datetime="2021-06-17T07:38:06.908Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/17/leetcode_230/">Leetcode 230 - Kth Smallest element in a BST</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BST</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Backtracking</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">InOrderTraversal</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Leetcode-Medium</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/17/leetcode_108/" class="archive-article-date">
-  	<time datetime="2021-06-17T07:08:37.275Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/17/leetcode_108/">Leetcode 108 - Convert Sorted Array to Binary Search Tree</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BST</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Backtracking</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">InOrderTraversal</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Leetcode-Easy</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/17/leetcode_98/" class="archive-article-date">
-  	<time datetime="2021-06-17T04:54:12.336Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/17/leetcode_98/">Leetcode 98 - Validate Binary Search Tree</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BST</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Backtracking</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">InOrderTraversal</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Leetcode-Medium</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -637,9 +563,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
