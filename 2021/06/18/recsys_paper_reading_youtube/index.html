@@ -6,14 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: BST | OZ&#39;s notes on Machine Learning</title>
+  <title>Recsys - Paper Reading - DNN for YouTube Recommendations | OZ&#39;s notes on Machine Learning</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="OZ&#39;s notes on Machine Learning">
-<meta property="og:url" content="http://example.com/tags/BST/index.html">
+  <meta name="description" content="Below is a summary on paper ‘Deep Neural Networks for YouTube Recommendations’. The problemVideo recommendation faces three main challenges   Scale: massive user base and corpus requires highly specia">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Recsys - Paper Reading - DNN for YouTube Recommendations">
+<meta property="og:url" content="http://example.com/2021/06/18/recsys_paper_reading_youtube/index.html">
 <meta property="og:site_name" content="OZ&#39;s notes on Machine Learning">
+<meta property="og:description" content="Below is a summary on paper ‘Deep Neural Networks for YouTube Recommendations’. The problemVideo recommendation faces three main challenges   Scale: massive user base and corpus requires highly specia">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-18T08:37:54.784Z">
+<meta property="article:modified_time" content="2021-06-18T08:38:05.912Z">
 <meta property="article:author" content="OZ">
+<meta property="article:tag" content="word2vec">
+<meta property="article:tag" content="nlp">
+<meta property="article:tag" content="recsys">
+<meta property="article:tag" content="paper-reading">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="OZ&#39;s notes on Machine Learning" type="application/atom+xml">
@@ -168,396 +176,177 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-recsys_paper_reading_youtube" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Recsys - Paper Reading - DNN for YouTube Recommendations
+    </h1>
+  
+
+        
+        <a href="/2021/06/18/recsys_paper_reading_youtube/" class="archive-article-date">
+  	<time datetime="2021-06-18T08:37:54.784Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-18</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+		
+
+			
+				<p>Below is a summary on paper ‘Deep Neural Networks for YouTube Recommendations’.</p>
+<h2 id="The-problem"><a href="#The-problem" class="headerlink" title="The problem"></a>The problem</h2><p>Video recommendation faces three main challenges</p>
+<blockquote>
+<ul>
+<li><strong>Scale:</strong> massive user base and corpus requires highly specialized distributed leanring algorithm and efficient serving</li>
+<li><strong>Freshness:</strong> system should be responsive to many videos uploaded each day</li>
+<li><strong>Noise:</strong> sparse user behavior and unobservable external factors make prediction difficult</li>
+</ul>
+</blockquote>
+<p>YouTube recommendation system consists of two stages</p>
+<blockquote>
+<ul>
+<li><strong>Candidate generation:</strong> retrieves a small subset (hundreds) of videos based on user’s activity</li>
+<li><strong>Ranking:</strong> assigns score to each video and present a few to user</li>
+</ul>
+</blockquote>
+<span id="more"></span>
+<h2 id="Candidate-generation"><a href="#Candidate-generation" class="headerlink" title="Candidate generation"></a>Candidate generation</h2><h3 id="Problem-setup"><a href="#Problem-setup" class="headerlink" title="Problem setup"></a>Problem setup</h3><ul>
+<li><strong>Nonlinear generalization of matrix factorization:</strong> previously a matrix factorization approach trained under rank loss was applied. Candidate generation aims to mimick the factorization behavior. </li>
+<li><strong>Extreme multiclass classification:</strong>  User completing video as positive example, millions of classes; negative sampling with importance weighting to speed up training; features are embedding of &lt;user, context&gt; pair and candidate videos, and additional non-video watch features</li>
+<li>User completing video as positive example - implicit feedback allows produce recommendation deep in the tail given sparse explicit feedback.</li>
+<li><strong>Nearest Neighbor:</strong> to speed up inference</li>
+<li><h3 id="Embedding-Features"><a href="#Embedding-Features" class="headerlink" title="Embedding Features"></a>Embedding Features</h3></li>
+<li><strong>Embeddings:</strong> video embeddings, user’s watch history, search history, geographic, device, etc; all embeddings are learnt jointly in the classifier</li>
+<li><strong>Example age feature:</strong> model predicts average watch likelihood in the training window of several weeks. Age feature is used in training to correct ‘past’ effect. This feature is set to zero at serving time.</li>
+</ul>
+<h3 id="Label-and-context-selection"><a href="#Label-and-context-selection" class="headerlink" title="Label and context selection"></a>Label and context selection</h3><ul>
+<li><strong>Surrogate problem:</strong> accurately predicting rating != effective recommendation</li>
+<li><strong>Insight to improve live metrics:</strong><ul>
+<li>Use training examples from watches at other sites to discover videos through means that are not from recommendation, and propagate new features to other similar videos.</li>
+<li>Use fixed number of training examples per use and weigh users equally, prevent skews from small group of highly active users</li>
+<li>Avoid reproducing user’s last search page by representing search query with unordered bag of tokens</li>
+<li>Predict next watch rather than a randomly held-out watch, e.g. user’s are more likely to watch next episode in a tv series</li>
+</ul>
+</li>
+</ul>
+<h2 id="Ranking"><a href="#Ranking" class="headerlink" title="Ranking"></a>Ranking</h2><ul>
+<li><strong>Model structure:</strong> similar to candidate generation</li>
+<li><strong>Ranking objective:</strong> use watch time per impression, as using CTR often promotes deceptive videos (clickbait)</li>
+<li><strong>Features:</strong> categorical features such as logged-in and search query. classified into two types: impression and query</li>
+<li><strong>Handcrafted features</strong>: most important features are those describe a user’s previous interaction with the item itself and other similar items, frequency of past video impressions (demote those recommended but not clicked)</li>
+<li><strong>Embedding:</strong> zero mapped to OOV; averaging used for multivalent categorical features; shared embedding used, e.g. video ID of last watch, video ID of impression</li>
+<li>normalize continuous features based on cdf</li>
+<li><strong>Weighted logistic regression</strong>: cross entropy loss used in training; watch time is used to weight positive examples and negative examples use unit weight.</li>
+</ul>
+<h4 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h4><p><a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/2959100.2959190">Deep Neural Networks for YouTube Recommendations, 2016</a></p>
+
+			
+		
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/17/leetcode_700/" class="archive-article-date">
-  	<time datetime="2021-06-17T07:57:02.670Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/17/leetcode_700/">Leetcode 700 - Search in a Binary Search Tree</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">word2vec</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BST</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">nlp</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Backtracking</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">recsys</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Leetcode-Easy</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">paper-reading</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
+        			<a href="/categories/machinelearning//" class="article-tag-list-link color1">machinelearning</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/17/leetcode_669/" class="archive-article-date">
-  	<time datetime="2021-06-17T07:51:38.805Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2021/06/18/recsys_paper_reading_airbnb/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Recsys - Paper Reading - Real-time Personalization at Airbnb</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/17/leetcode_669/">Leetcode 669 - Trim a Binary Search Tree</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BST</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Backtracking</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Leetcode-Medium</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#The-problem"><span class="toc-number">1.</span> <span class="toc-text">The problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Candidate-generation"><span class="toc-number">2.</span> <span class="toc-text">Candidate generation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Problem-setup"><span class="toc-number">2.1.</span> <span class="toc-text">Problem setup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Embedding-Features"><span class="toc-number">2.2.</span> <span class="toc-text">Embedding Features</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Label-and-context-selection"><span class="toc-number">2.3.</span> <span class="toc-text">Label and context selection</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ranking"><span class="toc-number">3.</span> <span class="toc-text">Ranking</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#reference"><span class="toc-number">3.0.1.</span> <span class="toc-text">reference</span></a></li></ol></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/17/leetcode_235/" class="archive-article-date">
-  	<time datetime="2021-06-17T07:43:06.970Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/17/leetcode_235/">Leetcode 235 - Lowest Common Ancestor of a Binary Search Tree</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BST</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Leetcode-Easy</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/17/leetcode_230/" class="archive-article-date">
-  	<time datetime="2021-06-17T07:38:06.908Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/17/leetcode_230/">Leetcode 230 - Kth Smallest element in a BST</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BST</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Backtracking</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">InOrderTraversal</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Leetcode-Medium</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/17/leetcode_108/" class="archive-article-date">
-  	<time datetime="2021-06-17T07:08:37.275Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/17/leetcode_108/">Leetcode 108 - Convert Sorted Array to Binary Search Tree</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BST</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Backtracking</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">InOrderTraversal</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Leetcode-Easy</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/17/leetcode_98/" class="archive-article-date">
-  	<time datetime="2021-06-17T04:54:12.336Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/17/leetcode_98/">Leetcode 98 - Validate Binary Search Tree</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BST</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Backtracking</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">InOrderTraversal</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Leetcode-Medium</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -580,9 +369,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
