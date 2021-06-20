@@ -170,19 +170,148 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-ml_part1_basic_concepts" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-ml-part2-classification" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/19/ml_part1_basic_concepts/">Machine Learning - Part 1 - Basic Concepts</a>
+      <a class="article-title" href="/2021/06/20/ml-part2-classification/">Machine Learning - Part 1 - Classifications - Logistic Regression</a>
     </h1>
   
 
         
-        <a href="/2021/06/19/ml_part1_basic_concepts/" class="archive-article-date">
+        <a href="/2021/06/20/ml-part2-classification/" class="archive-article-date">
+  	<time datetime="2021-06-20T03:34:36.181Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+		
+
+			
+				<h3 id="decision-boundary">Decision boundary</h3>
+<p>Below is a visual example of linear and nonlinear decision boundary. Classifiers are models that try to figure out which classes a item belongs to given the features as accurately as possible. <img src="/2021/06/20/ml-part2-classification/decision_boundary1.PNG" alt="linear-decision-boundars" /><img src="/2021/06/20/ml-part2-classification/decision_boundary2.PNG" alt="nonlinear-decision-boundary" /></p>
+<h2 id="logistic-regression">Logistic Regression</h2>
+<h3 id="model">Model</h3>
+<p>The model can be written as &gt;<span class="math display">\[h_\theta(x) = g(\theta^Tx)\]</span> <span class="math display">\[ g(z) = \frac{1}{1 + e^{-z}}\]</span> where <span class="math inline">\(g\)</span> - sigmoid function , <span class="math inline">\(\theta\)</span> - parameters for feature vector <span class="math inline">\(x\)</span></p>
+<h4 id="nice-properties-of-sigmoid-function">Nice properties of sigmoid function</h4>
+<ul>
+<li>We can use it to map x in range [-inf, inf] to y in range [0, 1].</li>
+<li><img src="/2021/06/20/ml-part2-classification/sigmoid.PNG" alt="sigmoid-function" /></li>
+<li>Gradient <span class="math inline">\(g^{&#39;}(x) = g(x) * (1- g(x))\)</span></li>
+<li>Thus by chain rule <span class="math inline">\(\frac{\partial}{\partial x}log(g(x))= (1- g(x))\)</span></li>
+</ul>
+<h3 id="loss-function">Loss function</h3>
+<p><span class="math display">\[J(\theta) = \frac{1}{m} \sum\limits_{i=1}^mLoss(h_\theta(x^i, y^i))\]</span> <span class="math display">\[Loss(h_\theta(x, y))=\left\{
+\begin{matrix}
+- log(h_\theta(x))\text{,         if  }y=1\\
+-  log(1-h_\theta(x))\text{,    if  }y=0
+\end{matrix}
+\right.
+\]</span> where i means observation i <!---more---></p>
+<h3 id="solving-parameters---gradient-descent">Solving parameters - gradient descent</h3>
+<blockquote>
+<p>Given <span class="math inline">\(J(\theta)\)</span>, we want to optimize for <span class="math inline">\(min_\theta J(\theta)\)</span> We need to derive <span class="math inline">\(-\frac{\partial}{\partial\theta_j}J(\theta)\)</span> Apply gradient descent repeatedly until convergence <span class="math inline">\(\theta\)</span> <span class="math display">\[\theta_j :=  \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta)\]</span> where <span class="math inline">\(\alpha\)</span> is learning rate We use chain rule, the gradient update is <span class="math inline">\(\theta\)</span> <span class="math display">\[\theta_j :=  \theta_j - \alpha\frac{1}{m}\sum\limits_{i=1}^m(h_\theta(x^i) - y^i)x_j^{i}\]</span> where i means observation i, j means j-th element in parameter vector <span class="math inline">\(\theta\)</span></p>
+</blockquote>
+<h3 id="extend-to-multi-class">Extend to multi-class</h3>
+<p>Treat the problem as 'one-vs-all' and solve as binary classification</p>
+<h3 id="regularization">Regularization</h3>
+<p>When the model overfits, it tends to update parameters in a way that it caters to certain outliers as show in the decision <img src="/2021/06/20/ml-part2-classification/decision_boundary.PNG" alt="linear-decision-boundary" /></p>
+<p>As a result, parameters become polarized at certain dimensions. Adding a penalty on the variance of parameters, we reduce impact of overfitting. &gt; The loss function becomes <span class="math display">\[ J(\theta) = \frac{1}{m}\sum\limits_{i=1}^m[-y^ilog(h_\theta(x^i)) - (1 - y^i)log(1-h_\theta(x^i))] + \frac{\lambda}{2m}\sum\limits_{j=1}^m\theta_j^2\]</span> where L2 penalty term is <span class="math inline">\(\frac{\lambda}{2m}\sum\limits_{j=1}^m\theta_j^2\)</span></p>
+<h3 id="codes">Codes</h3>
+<p>We use example of Iris dataset in sklearn <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line">X, y = load_iris(return_X_y=<span class="literal">True</span>)</span><br><span class="line">clf = LogisticRegression(random_state=<span class="number">0</span>).fit(X, y)</span><br><span class="line">clf.predict(X[:<span class="number">2</span>, :])</span><br><span class="line">clf.predict_proba(X[:<span class="number">2</span>, :])</span><br><span class="line">clf.score(X, y)</span><br></pre></td></tr></table></figure></p>
+<h4 id="reference">Reference</h4>
+<ul>
+<li>Stanford machine learning course, http://www.ai-start.com/ml2014/html/week3.html</li>
+<li>Sklearn, https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html</li>
+</ul>
+
+			
+		
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">classification</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/machinelearning//" class="article-tag-list-link color1">machinelearning</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/machinelearning/classification//" class="article-tag-list-link color5">classification</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/machinelearning/classification/supervised-models//" class="article-tag-list-link color3">supervised_models</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/06/20/ml-part2-classification/">Read more... >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-ml-part1-basic-concepts" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/19/ml-part1-basic-concepts/">Machine Learning - Part 1 - Basic Concepts</a>
+    </h1>
+  
+
+        
+        <a href="/2021/06/19/ml-part1-basic-concepts/" class="archive-article-date">
   	<time datetime="2021-06-19T09:14:25.514Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-19</time>
 </a>
         
@@ -233,7 +362,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/19/ml_part1_basic_concepts/">Read more... >></a>
+          <a class="article-more-a" href="/2021/06/19/ml-part1-basic-concepts/">Read more... >></a>
         </p>
       
 
@@ -263,19 +392,19 @@
 
 
   
-    <article id="post-recsys_paper_reading_youtube" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-recsys-paper-reading-youtube" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/18/recsys_paper_reading_youtube/">Recsys - Paper Reading - DNN for YouTube Recommendations</a>
+      <a class="article-title" href="/2021/06/18/recsys-paper-reading-youtube/">Recsys - Paper Reading - DNN for YouTube Recommendations</a>
     </h1>
   
 
         
-        <a href="/2021/06/18/recsys_paper_reading_youtube/" class="archive-article-date">
+        <a href="/2021/06/18/recsys-paper-reading-youtube/" class="archive-article-date">
   	<time datetime="2021-06-18T08:37:54.784Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-18</time>
 </a>
         
@@ -284,22 +413,10 @@
     <div class="article-entry" itemprop="articleBody">
 		
 
-					<p>Below is a summary on paper ‘Deep Neural Networks for YouTube Recommendations’.</p>
-<h2 id="The-problem"><a href="#The-problem" class="headerlink" title="The problem"></a>The problem</h2><p>Video recommendation faces three main challenges</p>
-<blockquote>
-<ul>
-<li><strong>Scale:</strong> massive user base and corpus requires highly specialized distributed leanring algorithm and efficient serving</li>
-<li><strong>Freshness:</strong> system should be responsive to many videos uploaded each day</li>
-<li><strong>Noise:</strong> sparse user behavior and unobservable external factors make prediction difficult</li>
-</ul>
-</blockquote>
-<p>YouTube recommendation system consists of two stages</p>
-<blockquote>
-<ul>
-<li><strong>Candidate generation:</strong> retrieves a small subset (hundreds) of videos based on user’s activity</li>
-<li><strong>Ranking:</strong> assigns score to each video and present a few to user</li>
-</ul>
-</blockquote>
+					<p>Below is a summary on paper 'Deep Neural Networks for YouTube Recommendations'.</p>
+<h2 id="the-problem">The problem</h2>
+<p>Video recommendation faces three main challenges &gt;- <strong>Scale:</strong> massive user base and corpus requires highly specialized distributed leanring algorithm and efficient serving &gt;- <strong>Freshness:</strong> system should be responsive to many videos uploaded each day &gt;- <strong>Noise:</strong> sparse user behavior and unobservable external factors make prediction difficult</p>
+<p>YouTube recommendation system consists of two stages &gt;- <strong>Candidate generation:</strong> retrieves a small subset (hundreds) of videos based on user's activity &gt;- <strong>Ranking:</strong> assigns score to each video and present a few to user
 			
 		
     </div>
@@ -344,7 +461,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/18/recsys_paper_reading_youtube/">Read more... >></a>
+          <a class="article-more-a" href="/2021/06/18/recsys-paper-reading-youtube/">Read more... >></a>
         </p>
       
 
@@ -374,19 +491,19 @@
 
 
   
-    <article id="post-recsys_paper_reading_airbnb" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-recsys-paper-reading-airbnb" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/18/recsys_paper_reading_airbnb/">Recsys - Paper Reading - Real-time Personalization at Airbnb</a>
+      <a class="article-title" href="/2021/06/18/recsys-paper-reading-airbnb/">Recsys - Paper Reading - Real-time Personalization at Airbnb</a>
     </h1>
   
 
         
-        <a href="/2021/06/18/recsys_paper_reading_airbnb/" class="archive-article-date">
+        <a href="/2021/06/18/recsys-paper-reading-airbnb/" class="archive-article-date">
   	<time datetime="2021-06-18T06:49:56.016Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-18</time>
 </a>
         
@@ -395,19 +512,13 @@
     <div class="article-entry" itemprop="articleBody">
 		
 
-					<h2 id="Real-time-Personalization-using-Embeddings-for-Search-Ranking-at-Airbnb"><a href="#Real-time-Personalization-using-Embeddings-for-Search-Ranking-at-Airbnb" class="headerlink" title="Real-time Personalization using Embeddings for Search Ranking at Airbnb"></a>Real-time Personalization using Embeddings for Search Ranking at Airbnb</h2><p>This is an excellent paper to gain a glimpse at how embedding is applied in large-scale recommendation systems in a commercial company, and how personalization with advanced data science greatly improves customer experience. Below is a quick summary. </p>
-<h2 id="The-problem"><a href="#The-problem" class="headerlink" title="The problem"></a>The problem</h2><p>Industry such as accommodation(Airbnb), ride sharing(Uber), online shops(Etsy) are considered as two-sided marketplaces where the platform optimizes search for both the buyers and the sellers. </p>
-<p>In the case of Airbnb, the problem is formulated as <em><strong>pairwise regression with positive utility for user bookings and negative utilities for host rejections,</strong></em> and can be solved by a modified version of LambdaRank. Embedding techniques comes into picture where we need to calculate similarities between users and similarities between listings. </p>
-<p>Overall, the solution provided in the paper have the following characteristics</p>
-<blockquote>
-<ul>
-<li>Real-time personalization </li>
-<li>Adapt to congregated search</li>
-<li>Good representation of user</li>
-<li>Consider host preferences</li>
-</ul>
-</blockquote>
-<p><strong>Scale of the problem:</strong> the listing embedding is built from 800 million search click sessions and user base is 50 million.</p>
+					<h2 id="real-time-personalization-using-embeddings-for-search-ranking-at-airbnb">Real-time Personalization using Embeddings for Search Ranking at Airbnb</h2>
+<p>This is an excellent paper to gain a glimpse at how embedding is applied in large-scale recommendation systems in a commercial company, and how personalization with advanced data science greatly improves customer experience. Below is a quick summary.</p>
+<h2 id="the-problem">The problem</h2>
+<p>Industry such as accommodation(Airbnb), ride sharing(Uber), online shops(Etsy) are considered as two-sided marketplaces where the platform optimizes search for both the buyers and the sellers.</p>
+<p>In the case of Airbnb, the problem is formulated as <strong><em>pairwise regression with positive utility for user bookings and negative utilities for host rejections,</em></strong> and can be solved by a modified version of LambdaRank. Embedding techniques comes into picture where we need to calculate similarities between users and similarities between listings.</p>
+<p>Overall, the solution provided in the paper have the following characteristics &gt;- Real-time personalization &gt;- Adapt to congregated search &gt;- Good representation of user &gt;- Consider host preferences</p>
+<p><strong>Scale of the problem:</strong> the listing embedding is built from 800 million search click sessions and user base is 50 million.
 			
 		
     </div>
@@ -452,7 +563,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/18/recsys_paper_reading_airbnb/">Read more... >></a>
+          <a class="article-more-a" href="/2021/06/18/recsys-paper-reading-airbnb/">Read more... >></a>
         </p>
       
 
@@ -482,19 +593,19 @@
 
 
   
-    <article id="post-recsys_alibaba" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-recsys-alibaba" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/18/recsys_alibaba/">Recsys - 阿里巴巴B2B算法实战</a>
+      <a class="article-title" href="/2021/06/18/recsys-alibaba/">Recsys - 阿里巴巴B2B算法实战</a>
     </h1>
   
 
         
-        <a href="/2021/06/18/recsys_alibaba/" class="archive-article-date">
+        <a href="/2021/06/18/recsys-alibaba/" class="archive-article-date">
   	<time datetime="2021-06-17T17:22:49.003Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-18</time>
 </a>
         
@@ -504,18 +615,13 @@
 		
 
 					<p>根据图书“阿里巴巴B2B算法实战” 做的一些笔记摘要。</p>
-<hr>
+<hr />
 <p>工程系统</p>
-<p>–BE向量召回：– 将元素（实体）通过向量化构建高效检索的索引。 在检索端同样方式向量化，利用检索技术进行召回，得到距离相近的商品集合，并且根据距离排序。底层向量索引和检索技术由达摩院研发，封装，用于词向量和短文本向量召回。同时也应用在文本搜索场景下文本匹配不足的问题。</p>
-<p>–RTP：– rank service, 功能更多的tf-serving 封装，对搜索和推荐业务打分和排序。RTP把权重和网络结构分发和加载在内存，网络结构支持小时更新，参数和权重支持实时更新。在内部实现上，RTP将模型拆分，对图进行转化，将training grapha转成inference graph。添加placeholder，用于外部请求数据输入； feature generator用于特征生成。特征生成和本地内容表关联，执行时候检索本地表，获得商品维度数据生成特征。Loss节点删除。</p>
+<p>--BE向量召回：-- 将元素（实体）通过向量化构建高效检索的索引。 在检索端同样方式向量化，利用检索技术进行召回，得到距离相近的商品集合，并且根据距离排序。底层向量索引和检索技术由达摩院研发，封装，用于词向量和短文本向量召回。同时也应用在文本搜索场景下文本匹配不足的问题。</p>
+<p>--RTP：-- rank service, 功能更多的tf-serving 封装，对搜索和推荐业务打分和排序。RTP把权重和网络结构分发和加载在内存，网络结构支持小时更新，参数和权重支持实时更新。在内部实现上，RTP将模型拆分，对图进行转化，将training grapha转成inference graph。添加placeholder，用于外部请求数据输入； feature generator用于特征生成。特征生成和本地内容表关联，执行时候检索本地表，获得商品维度数据生成特征。Loss节点删除。</p>
 <p>实时数据工程：实时数据分层汇总成实时数据，公共明细层，应用数据层；</p>
-<p>搜索算法<br>Query查询理解：主要解决三个问题：<br>    1. 用户输入Query后 - Query类目预测<br>    2. 用户输入Query错误或者表达模糊 - Query改写<br>    3. 用户输入Query简单或者尚未输入时 - Query推荐</p>
-<p>Query类目预测<br>场景： </p>
-<ul>
-<li>商品类目采用多层结构，比如：女装-》大码女装-》大码T恤。 本质师分类任务</li>
-<li>搜索及搜索广告从召回到精排， 快速定位重点类目，在排序中保证商品和搜索词的相关性</li>
-<li>搜索导购类服务： 类目导航、风向标</li>
-<li>商家新品发布时，根据标题进行类目推荐，提高发布效率
+<p>搜索算法 Query查询理解：主要解决三个问题： 1. 用户输入Query后 - Query类目预测 2. 用户输入Query错误或者表达模糊 - Query改写 3. 用户输入Query简单或者尚未输入时 - Query推荐</p>
+<p>Query类目预测 场景： - 商品类目采用多层结构，比如：女装-》大码女装-》大码T恤。 本质师分类任务 - 搜索及搜索广告从召回到精排， 快速定位重点类目，在排序中保证商品和搜索词的相关性 - 搜索导购类服务： 类目导航、风向标 - 商家新品发布时，根据标题进行类目推荐，提高发布效率
 			
 		
     </div>
@@ -548,7 +654,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/18/recsys_alibaba/">Read more... >></a>
+          <a class="article-more-a" href="/2021/06/18/recsys-alibaba/">Read more... >></a>
         </p>
       
 
@@ -578,19 +684,19 @@
 
 
   
-    <article id="post-nlp_word2vec" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-nlp-word2vec" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/18/nlp_word2vec/">NLP - word2vec</a>
+      <a class="article-title" href="/2021/06/18/nlp-word2vec/">NLP - word2vec</a>
     </h1>
   
 
         
-        <a href="/2021/06/18/nlp_word2vec/" class="archive-article-date">
+        <a href="/2021/06/18/nlp-word2vec/" class="archive-article-date">
   	<time datetime="2021-06-17T16:17:58.365Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-18</time>
 </a>
         
@@ -600,34 +706,29 @@
 		
 
 			
-				<p>A word’s meaning is given by the word that frequently appear close-by. So we can use the many contexts of the word w to build up representation of w. </p>
+				<p>A word's meaning is given by the word that frequently appear close-by. So we can use the many contexts of the word w to build up representation of w.</p>
 <p>Word embedding techniques aim to create dense vector representation for words with the following characteristics:</p>
 <blockquote>
 <ul>
-<li>unique for each word </li>
-<li>captures contexts </li>
+<li>unique for each word</li>
+<li>captures contexts</li>
 <li>captures word relations</li>
 </ul>
 </blockquote>
 <p>Word2Vec is one of such techniques, which is constructed as a 3-layer neural network and trains words against other words that neighbor them in the input corpus.</p>
-<p>It can be implemented in two ways:</p>
-<blockquote>
-<ul>
-<li>CBOW (continous bag of words): using context to predict a target word. By treating entire context as one observation, it smoothes over a lot of distributional information. </li>
-<li>Skip-gram: using a word to predict target context. Treats context-target pair as new information. Do better with large datasets.</li>
-</ul>
-</blockquote>
-<p>Once training is done, we just take hidden weights as word embeddings.  </p>
+<p>It can be implemented in two ways: &gt;- CBOW (continous bag of words): using context to predict a target word. By treating entire context as one observation, it smoothes over a lot of distributional information. &gt;- Skip-gram: using a word to predict target context. Treats context-target pair as new information. Do better with large datasets.</p>
+<p>Once training is done, we just take hidden weights as word embeddings.</p>
 <blockquote>
 <p>This trick is similar to that in unsupervised feature learning, where an auto-encoder is trained to compress an input vector in the hidden layer and decompress it back to the original in the output layer. After it’s done training, the output layer (the decompression step) is stripped off and only the hidden layer is used since it has learned good features, it’s a trick for learning good image features without having labeled training data.</p>
 </blockquote>
-<p>Other technical detail in Word2vec include subsampling frequent words, and Negative Sampling which select just a small number of “negative” words  and updates only a small percentage of the model’s weights, rather than all of them.</p>
-<hr>
-<h5 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h5><ul>
+<p>Other technical detail in Word2vec include subsampling frequent words, and Negative Sampling which select just a small number of “negative” words and updates only a small percentage of the model’s weights, rather than all of them.</p>
+<hr />
+<h5 id="reference">Reference</h5>
+<ul>
 <li>cs224n stanford</li>
-<li><a target="_blank" rel="noopener" href="https://wiki.pathmind.com/word2vec">https://wiki.pathmind.com/word2vec</a></li>
-<li><a target="_blank" rel="noopener" href="https://israelg99.github.io/2017-03-23-Word2Vec-Explained/">https://israelg99.github.io/2017-03-23-Word2Vec-Explained/</a></li>
-<li><a target="_blank" rel="noopener" href="http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/">http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/</a></li>
+<li>https://wiki.pathmind.com/word2vec</li>
+<li>https://israelg99.github.io/2017-03-23-Word2Vec-Explained/</li>
+<li>http://mccormickml.com/2017/01/11/word2vec-tutorial-part-2-negative-sampling/</li>
 </ul>
 
 			
@@ -666,7 +767,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/18/nlp_word2vec/">Read more... >></a>
+          <a class="article-more-a" href="/2021/06/18/nlp-word2vec/">Read more... >></a>
         </p>
       
 
@@ -696,19 +797,19 @@
 
 
   
-    <article id="post-leetcode_297" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-leetcode-297" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/17/leetcode_297/">Leetcode 297 -Serialize and Deserialize Binary Tree</a>
+      <a class="article-title" href="/2021/06/17/leetcode-297/">Leetcode 297 -Serialize and Deserialize Binary Tree</a>
     </h1>
   
 
         
-        <a href="/2021/06/17/leetcode_297/" class="archive-article-date">
+        <a href="/2021/06/17/leetcode-297/" class="archive-article-date">
   	<time datetime="2021-06-17T10:28:06.382Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
 </a>
         
@@ -718,14 +819,18 @@
 		
 
 			
-				<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Serialize and Deserialize Binary Tree</p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><h3 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h3><ul>
+				<h2 id="problem">Problem</h2>
+<p>Serialize and Deserialize Binary Tree</p>
+<h2 id="solution">Solution</h2>
+<h3 id="bfs">BFS</h3>
+<ul>
 <li><strong>Time complexity:</strong> O(N)</li>
-<li><strong>Space complexity:</strong> O(N)<h3 id="Codes-Python"><a href="#Codes-Python" class="headerlink" title="Codes - Python"></a>Codes - Python</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lowestCommonAncestor</span>(<span class="params">self, root: <span class="string">&#x27;TreeNode&#x27;</span>, p: <span class="string">&#x27;TreeNode&#x27;</span>, q: <span class="string">&#x27;TreeNode&#x27;</span></span>) -&gt; &#x27;TreeNode&#x27;:</span></span><br><span class="line">        <span class="keyword">while</span> root:</span><br><span class="line">            <span class="keyword">if</span> root.val &gt; p.val <span class="keyword">and</span> root.val &gt; q.val:</span><br><span class="line">                root = root.left</span><br><span class="line">            <span class="keyword">elif</span> root.val &lt; p.val <span class="keyword">and</span> root.val &lt; q.val:</span><br><span class="line">                root = root.right</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> root</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>Space complexity:</strong> O(N) ### Codes - Python <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lowestCommonAncestor</span>(<span class="params">self, root: <span class="string">&#x27;TreeNode&#x27;</span>, p: <span class="string">&#x27;TreeNode&#x27;</span>, q: <span class="string">&#x27;TreeNode&#x27;</span></span>) -&gt; &#x27;TreeNode&#x27;:</span></span><br><span class="line">        <span class="keyword">while</span> root:</span><br><span class="line">            <span class="keyword">if</span> root.val &gt; p.val <span class="keyword">and</span> root.val &gt; q.val:</span><br><span class="line">                root = root.left</span><br><span class="line">            <span class="keyword">elif</span> root.val &lt; p.val <span class="keyword">and</span> root.val &lt; q.val:</span><br><span class="line">                root = root.right</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> root</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure></li>
 </ul>
-<h3 id="DFS"><a href="#DFS" class="headerlink" title="DFS"></a>DFS</h3><ul>
+<h3 id="dfs">DFS</h3>
+<ul>
 <li><strong>Time complexity:</strong> O(N)</li>
-<li><strong>Space complexity:</strong> O(N)<h3 id="Codes-Python-1"><a href="#Codes-Python-1" class="headerlink" title="Codes - Python"></a>Codes - Python</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lowestCommonAncestor</span>(<span class="params">self, root: <span class="string">&#x27;TreeNode&#x27;</span>, p: <span class="string">&#x27;TreeNode&#x27;</span>, q: <span class="string">&#x27;TreeNode&#x27;</span></span>) -&gt; &#x27;TreeNode&#x27;:</span></span><br><span class="line">        <span class="keyword">while</span> root:</span><br><span class="line">            <span class="keyword">if</span> root.val &gt; p.val <span class="keyword">and</span> root.val &gt; q.val:</span><br><span class="line">                root = root.left</span><br><span class="line">            <span class="keyword">elif</span> root.val &lt; p.val <span class="keyword">and</span> root.val &lt; q.val:</span><br><span class="line">                root = root.right</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> root</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>Space complexity:</strong> O(N) ### Codes - Python <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lowestCommonAncestor</span>(<span class="params">self, root: <span class="string">&#x27;TreeNode&#x27;</span>, p: <span class="string">&#x27;TreeNode&#x27;</span>, q: <span class="string">&#x27;TreeNode&#x27;</span></span>) -&gt; &#x27;TreeNode&#x27;:</span></span><br><span class="line">        <span class="keyword">while</span> root:</span><br><span class="line">            <span class="keyword">if</span> root.val &gt; p.val <span class="keyword">and</span> root.val &gt; q.val:</span><br><span class="line">                root = root.left</span><br><span class="line">            <span class="keyword">elif</span> root.val &lt; p.val <span class="keyword">and</span> root.val &lt; q.val:</span><br><span class="line">                root = root.right</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> root</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure></li>
 </ul>
 
 			
@@ -768,7 +873,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/17/leetcode_297/">Read more... >></a>
+          <a class="article-more-a" href="/2021/06/17/leetcode-297/">Read more... >></a>
         </p>
       
 
@@ -798,19 +903,19 @@
 
 
   
-    <article id="post-leetcode_103" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-leetcode-103" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/17/leetcode_103/">Leetcode 103 - Binary Tree Zigzag Level Order Traversal</a>
+      <a class="article-title" href="/2021/06/17/leetcode-103/">Leetcode 103 - Binary Tree Zigzag Level Order Traversal</a>
     </h1>
   
 
         
-        <a href="/2021/06/17/leetcode_103/" class="archive-article-date">
+        <a href="/2021/06/17/leetcode-103/" class="archive-article-date">
   	<time datetime="2021-06-17T10:24:07.888Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
 </a>
         
@@ -820,11 +925,13 @@
 		
 
 			
-				<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Return the zigzag level order traversal of binary tree nodes’ values</p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><ul>
+				<h2 id="problem">Problem</h2>
+<p>Return the zigzag level order traversal of binary tree nodes' values</p>
+<h2 id="solution">Solution</h2>
+<ul>
 <li>Similar to problem 102, the only difference we use deque to keep track of nodes in each level and add a flag to indicate which direction to append nodes.</li>
 <li><strong>Time complexity:</strong> O(N)</li>
-<li><strong>Space complexity:</strong> O(N)<h3 id="Codes-Python"><a href="#Codes-Python" class="headerlink" title="Codes - Python"></a>Codes - Python</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">zigzagLevelOrder</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span></span><br><span class="line">        res = []</span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> res</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># alternating print out order</span></span><br><span class="line">        queue = deque()s</span><br><span class="line">        queue.append(root)</span><br><span class="line">        level_count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(queue) &gt; <span class="number">0</span>:</span><br><span class="line">            size = <span class="built_in">len</span>(queue)</span><br><span class="line">            res_level = []</span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> size &gt; <span class="number">0</span>:</span><br><span class="line">                direction = level_count % <span class="number">2</span></span><br><span class="line">                <span class="keyword">if</span> direction == <span class="number">0</span>:</span><br><span class="line">                    node = queue.popleft()</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    node = queue.pop()</span><br><span class="line"></span><br><span class="line">                res_level.append(node.val)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> direction == <span class="number">0</span>:</span><br><span class="line">                    <span class="keyword">if</span> node.left <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                        queue.append(node.left)</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> node.right <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                        queue.append(node.right)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">if</span> node.right <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                        queue.appendleft(node.right)</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> node.left <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                        queue.appendleft(node.left)  </span><br><span class="line"></span><br><span class="line">                size -= <span class="number">1</span></span><br><span class="line">                <span class="comment"># print(level_count, node.val, queue, next_queue)</span></span><br><span class="line">            </span><br><span class="line">            level_count += <span class="number">1</span></span><br><span class="line">            res.append(res_level)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure></li>
+<li><strong>Space complexity:</strong> O(N) ### Codes - Python <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">zigzagLevelOrder</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span></span><br><span class="line">        res = []</span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> res</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># alternating print out order</span></span><br><span class="line">        queue = deque()s</span><br><span class="line">        queue.append(root)</span><br><span class="line">        level_count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(queue) &gt; <span class="number">0</span>:</span><br><span class="line">            size = <span class="built_in">len</span>(queue)</span><br><span class="line">            res_level = []</span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> size &gt; <span class="number">0</span>:</span><br><span class="line">                direction = level_count % <span class="number">2</span></span><br><span class="line">                <span class="keyword">if</span> direction == <span class="number">0</span>:</span><br><span class="line">                    node = queue.popleft()</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    node = queue.pop()</span><br><span class="line"></span><br><span class="line">                res_level.append(node.val)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> direction == <span class="number">0</span>:</span><br><span class="line">                    <span class="keyword">if</span> node.left <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                        queue.append(node.left)</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> node.right <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                        queue.append(node.right)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">if</span> node.right <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                        queue.appendleft(node.right)</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> node.left <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                        queue.appendleft(node.left)  </span><br><span class="line"></span><br><span class="line">                size -= <span class="number">1</span></span><br><span class="line">                <span class="comment"># print(level_count, node.val, queue, next_queue)</span></span><br><span class="line">            </span><br><span class="line">            level_count += <span class="number">1</span></span><br><span class="line">            res.append(res_level)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure></li>
 </ul>
 
 			
@@ -863,7 +970,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/17/leetcode_103/">Read more... >></a>
+          <a class="article-more-a" href="/2021/06/17/leetcode-103/">Read more... >></a>
         </p>
       
 
@@ -893,19 +1000,19 @@
 
 
   
-    <article id="post-leetcode_102" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-leetcode-102" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/17/leetcode_102/">Leetcode 102 -  Binary Tree Level Order Traversal</a>
+      <a class="article-title" href="/2021/06/17/leetcode-102/">Leetcode 102 -  Binary Tree Level Order Traversal</a>
     </h1>
   
 
         
-        <a href="/2021/06/17/leetcode_102/" class="archive-article-date">
+        <a href="/2021/06/17/leetcode-102/" class="archive-article-date">
   	<time datetime="2021-06-17T10:20:44.601Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
 </a>
         
@@ -915,11 +1022,13 @@
 		
 
 			
-				<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Return tree level by level</p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><ul>
+				<h2 id="problem">Problem</h2>
+<p>Return tree level by level</p>
+<h2 id="solution">Solution</h2>
+<ul>
 <li>Use a queue to store values on each level. We append value of each node in queue to a list and append the list to total result once we tranverse through the list. Whenever we fetch an item from the list, nodes on the left and right are added to the queue.</li>
 <li><strong>Time complexity:</strong> O(N)</li>
-<li><strong>Space complexity:</strong> O(N)<h3 id="Codes-Python"><a href="#Codes-Python" class="headerlink" title="Codes - Python"></a>Codes - Python</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">levelOrder</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span></span><br><span class="line">        res = []</span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> res</span><br><span class="line">        </span><br><span class="line">        queue = []</span><br><span class="line">        queue.append(root)</span><br><span class="line">       </span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(queue) &gt; <span class="number">0</span>:</span><br><span class="line">            size = <span class="built_in">len</span>(queue)</span><br><span class="line">            res_level = []</span><br><span class="line">            <span class="keyword">while</span> size &gt; <span class="number">0</span></span><br><span class="line">                node = queue.pop(<span class="number">0</span>)</span><br><span class="line">                res_level.append(node.val)</span><br><span class="line">                <span class="keyword">if</span> node.left <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    queue.append(node.left)</span><br><span class="line">                <span class="keyword">if</span> node.right <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    queue.append(node.right)</span><br><span class="line">                size = size - <span class="number">1</span></span><br><span class="line">            res.append(res_level)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure></li>
+<li><strong>Space complexity:</strong> O(N) ### Codes - Python <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">levelOrder</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span></span><br><span class="line">        res = []</span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> res</span><br><span class="line">        </span><br><span class="line">        queue = []</span><br><span class="line">        queue.append(root)</span><br><span class="line">       </span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(queue) &gt; <span class="number">0</span>:</span><br><span class="line">            size = <span class="built_in">len</span>(queue)</span><br><span class="line">            res_level = []</span><br><span class="line">            <span class="keyword">while</span> size &gt; <span class="number">0</span></span><br><span class="line">                node = queue.pop(<span class="number">0</span>)</span><br><span class="line">                res_level.append(node.val)</span><br><span class="line">                <span class="keyword">if</span> node.left <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    queue.append(node.left)</span><br><span class="line">                <span class="keyword">if</span> node.right <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    queue.append(node.right)</span><br><span class="line">                size = size - <span class="number">1</span></span><br><span class="line">            res.append(res_level)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure></li>
 </ul>
 
 			
@@ -958,7 +1067,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/17/leetcode_102/">Read more... >></a>
+          <a class="article-more-a" href="/2021/06/17/leetcode-102/">Read more... >></a>
         </p>
       
 
@@ -988,19 +1097,19 @@
 
 
   
-    <article id="post-leetcode_summary" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-leetcode-summary" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/17/leetcode_summary/">Leetcode Summary</a>
+      <a class="article-title" href="/2021/06/17/leetcode-summary/">Leetcode Summary</a>
     </h1>
   
 
         
-        <a href="/2021/06/17/leetcode_summary/" class="archive-article-date">
+        <a href="/2021/06/17/leetcode-summary/" class="archive-article-date">
   	<time datetime="2021-06-17T08:09:05.775Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
 </a>
         
@@ -1010,16 +1119,18 @@
 		
 
 			
-				<h2 id="DFS-Binary-Search-Tree-BST"><a href="#DFS-Binary-Search-Tree-BST" class="headerlink" title="DFS - Binary Search Tree (BST)"></a>DFS - Binary Search Tree (BST)</h2><p><strong>keywords:</strong>  Backtracking, InOrder/PreOrder/PostOrder traversal</p>
+				<h2 id="dfs-binary-search-tree-bst"><a class="markdownIt-Anchor" href="#dfs-binary-search-tree-bst"></a> DFS - Binary Search Tree (BST)</h2>
+<p><strong>keywords:</strong>  Backtracking, InOrder/PreOrder/PostOrder traversal</p>
 <ul>
-<li> <a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_98/">Validate Binary Search Tree</a> </li>
-<li> <a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_108/">Convert Sorted Array to Binary Search Tree</a> </li>
-<li> <a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_108/">Kth Smallest element in a BST</a> </li>
-<li> <a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_235/">Lowest Common Ancestor of a Binary Search Tree</a> </li>
-<li> <a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_669/">Trim a Binary Search Tree</a> </li>
-<li><a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_700/">Search Range in Binary Search Tree</a> </li>
+<li><a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_98/">Validate Binary Search Tree</a></li>
+<li><a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_108/">Convert Sorted Array to Binary Search Tree</a></li>
+<li><a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_108/">Kth Smallest element in a BST</a></li>
+<li><a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_235/">Lowest Common Ancestor of a Binary Search Tree</a></li>
+<li><a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_669/">Trim a Binary Search Tree</a></li>
+<li><a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_700/">Search Range in Binary Search Tree</a></li>
 </ul>
-<h2 id="DFS-Combinations"><a href="#DFS-Combinations" class="headerlink" title="DFS - Combinations"></a>DFS - Combinations</h2>
+<h2 id="dfs-combinations"><a class="markdownIt-Anchor" href="#dfs-combinations"></a> DFS - Combinations</h2>
+
 			
 		
     </div>
@@ -1052,110 +1163,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/17/leetcode_summary/">Read more... >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-leetcode_700" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/17/leetcode_700/">Leetcode 700 - Search in a Binary Search Tree</a>
-    </h1>
-  
-
-        
-        <a href="/2021/06/17/leetcode_700/" class="archive-article-date">
-  	<time datetime="2021-06-17T07:57:02.670Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-		
-
-			
-				<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Given BST and value to search, return the node.</p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><ul>
-<li>We use the property of BST and check each node. The idea is similar to binary search</li>
-<li><strong>Time complexity:</strong> O(H). H: height of tree. Average is O(logN) and worst case O(N)</li>
-<li><strong>Space complexity:</strong>  same as time complexity<h3 id="Codes-Python"><a href="#Codes-Python" class="headerlink" title="Codes - Python"></a>Codes - Python</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">searchBST</span>(<span class="params">self, root: TreeNode, val: <span class="built_in">int</span></span>) -&gt; TreeNode:</span></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> root.val == val:</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        <span class="keyword">if</span> root.val &gt; val:</span><br><span class="line">            <span class="keyword">return</span> self.searchBST(root.left, val)</span><br><span class="line">        <span class="keyword">if</span> root.val &lt; val:</span><br><span class="line">            <span class="keyword">return</span> self.searchBST(root.right, val)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-
-			
-		
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BST</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Backtracking</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Leetcode-Easy</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/17/leetcode_700/">Read more... >></a>
+          <a class="article-more-a" href="/2021/06/17/leetcode-summary/">Read more... >></a>
         </p>
       
 

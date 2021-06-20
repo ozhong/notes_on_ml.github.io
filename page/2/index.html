@@ -170,19 +170,124 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-leetcode_669" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-leetcode-700" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/17/leetcode_669/">Leetcode 669 - Trim a Binary Search Tree</a>
+      <a class="article-title" href="/2021/06/17/leetcode-700/">Leetcode 700 - Search in a Binary Search Tree</a>
     </h1>
   
 
         
-        <a href="/2021/06/17/leetcode_669/" class="archive-article-date">
+        <a href="/2021/06/17/leetcode-700/" class="archive-article-date">
+  	<time datetime="2021-06-17T07:57:02.670Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+		
+
+			
+				<h2 id="problem">Problem</h2>
+<p>Given BST and value to search, return the node.</p>
+<h2 id="solution">Solution</h2>
+<ul>
+<li>We use the property of BST and check each node. The idea is similar to binary search</li>
+<li><strong>Time complexity:</strong> O(H). H: height of tree. Average is O(logN) and worst case O(N)</li>
+<li><strong>Space complexity:</strong> same as time complexity ### Codes - Python <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">searchBST</span>(<span class="params">self, root: TreeNode, val: <span class="built_in">int</span></span>) -&gt; TreeNode:</span></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> root.val == val:</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        <span class="keyword">if</span> root.val &gt; val:</span><br><span class="line">            <span class="keyword">return</span> self.searchBST(root.left, val)</span><br><span class="line">        <span class="keyword">if</span> root.val &lt; val:</span><br><span class="line">            <span class="keyword">return</span> self.searchBST(root.right, val)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+			
+		
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">DFS</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BST</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Backtracking</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Leetcode-Easy</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/leetcode//" class="article-tag-list-link color4">leetcode</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/06/17/leetcode-700/">Read more... >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-leetcode-669" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/06/17/leetcode-669/">Leetcode 669 - Trim a Binary Search Tree</a>
+    </h1>
+  
+
+        
+        <a href="/2021/06/17/leetcode-669/" class="archive-article-date">
   	<time datetime="2021-06-17T07:51:38.805Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
 </a>
         
@@ -192,11 +297,13 @@
 		
 
 			
-				<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Given BST, return root node of subtrees which have nodes with values in given range.</p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><ul>
+				<h2 id="problem">Problem</h2>
+<p>Given BST, return root node of subtrees which have nodes with values in given range.</p>
+<h2 id="solution">Solution</h2>
+<ul>
 <li>We use the property of BST and iteratively check if given nodes are on the left and right subtrees respectively.</li>
 <li><strong>Time complexity:</strong> O(N). We visit each node at most once.</li>
-<li><strong>Space complexity:</strong> O(N). The worst case of stack size used in backtracking is size of tree.<h3 id="Codes-Python"><a href="#Codes-Python" class="headerlink" title="Codes - Python"></a>Codes - Python</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">trimBST</span>(<span class="params">self, root: TreeNode, low: <span class="built_in">int</span>, high: <span class="built_in">int</span></span>) -&gt; TreeNode:</span></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">if</span> root.val &lt; low:</span><br><span class="line">            <span class="keyword">return</span> self.trimBST(root.right, low, high)</span><br><span class="line">        <span class="keyword">if</span> root.val &gt; high:</span><br><span class="line">            <span class="keyword">return</span> self.trimBST(root.left, low , high)</span><br><span class="line">        root.left = self.trimBST(root.left, low , root.val)</span><br><span class="line">        root.right = self.trimBST(root.right, root.val, high)</span><br><span class="line">        <span class="keyword">return</span> root</span><br></pre></td></tr></table></figure></li>
+<li><strong>Space complexity:</strong> O(N). The worst case of stack size used in backtracking is size of tree. ### Codes - Python <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">trimBST</span>(<span class="params">self, root: TreeNode, low: <span class="built_in">int</span>, high: <span class="built_in">int</span></span>) -&gt; TreeNode:</span></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">if</span> root.val &lt; low:</span><br><span class="line">            <span class="keyword">return</span> self.trimBST(root.right, low, high)</span><br><span class="line">        <span class="keyword">if</span> root.val &gt; high:</span><br><span class="line">            <span class="keyword">return</span> self.trimBST(root.left, low , high)</span><br><span class="line">        root.left = self.trimBST(root.left, low , root.val)</span><br><span class="line">        root.right = self.trimBST(root.right, root.val, high)</span><br><span class="line">        <span class="keyword">return</span> root</span><br></pre></td></tr></table></figure></li>
 </ul>
 
 			
@@ -243,7 +350,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/17/leetcode_669/">Read more... >></a>
+          <a class="article-more-a" href="/2021/06/17/leetcode-669/">Read more... >></a>
         </p>
       
 
@@ -273,19 +380,19 @@
 
 
   
-    <article id="post-leetcode_235" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-leetcode-235" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/17/leetcode_235/">Leetcode 235 - Lowest Common Ancestor of a Binary Search Tree</a>
+      <a class="article-title" href="/2021/06/17/leetcode-235/">Leetcode 235 - Lowest Common Ancestor of a Binary Search Tree</a>
     </h1>
   
 
         
-        <a href="/2021/06/17/leetcode_235/" class="archive-article-date">
+        <a href="/2021/06/17/leetcode-235/" class="archive-article-date">
   	<time datetime="2021-06-17T07:43:06.970Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
 </a>
         
@@ -295,11 +402,13 @@
 		
 
 			
-				<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Find lowest common ancestor in BST.</p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><ul>
+				<h2 id="problem">Problem</h2>
+<p>Find lowest common ancestor in BST.</p>
+<h2 id="solution">Solution</h2>
+<ul>
 <li>We use the property of BST and iteratively check if given nodes are on the left and right subtrees respectively.</li>
 <li><strong>Time complexity:</strong> O(N)</li>
-<li><strong>Space complexity:</strong> O(1)<h3 id="Codes-Python"><a href="#Codes-Python" class="headerlink" title="Codes - Python"></a>Codes - Python</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lowestCommonAncestor</span>(<span class="params">self, root: <span class="string">&#x27;TreeNode&#x27;</span>, p: <span class="string">&#x27;TreeNode&#x27;</span>, q: <span class="string">&#x27;TreeNode&#x27;</span></span>) -&gt; &#x27;TreeNode&#x27;:</span></span><br><span class="line">        <span class="keyword">while</span> root:</span><br><span class="line">            <span class="keyword">if</span> root.val &gt; p.val <span class="keyword">and</span> root.val &gt; q.val:</span><br><span class="line">                root = root.left</span><br><span class="line">            <span class="keyword">elif</span> root.val &lt; p.val <span class="keyword">and</span> root.val &lt; q.val:</span><br><span class="line">                root = root.right</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> root</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>Space complexity:</strong> O(1) ### Codes - Python <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lowestCommonAncestor</span>(<span class="params">self, root: <span class="string">&#x27;TreeNode&#x27;</span>, p: <span class="string">&#x27;TreeNode&#x27;</span>, q: <span class="string">&#x27;TreeNode&#x27;</span></span>) -&gt; &#x27;TreeNode&#x27;:</span></span><br><span class="line">        <span class="keyword">while</span> root:</span><br><span class="line">            <span class="keyword">if</span> root.val &gt; p.val <span class="keyword">and</span> root.val &gt; q.val:</span><br><span class="line">                root = root.left</span><br><span class="line">            <span class="keyword">elif</span> root.val &lt; p.val <span class="keyword">and</span> root.val &lt; q.val:</span><br><span class="line">                root = root.right</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> root</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure></li>
 </ul>
 
 			
@@ -342,7 +451,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/17/leetcode_235/">Read more... >></a>
+          <a class="article-more-a" href="/2021/06/17/leetcode-235/">Read more... >></a>
         </p>
       
 
@@ -372,19 +481,19 @@
 
 
   
-    <article id="post-leetcode_230" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-leetcode-230" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/17/leetcode_230/">Leetcode 230 - Kth Smallest element in a BST</a>
+      <a class="article-title" href="/2021/06/17/leetcode-230/">Leetcode 230 - Kth Smallest element in a BST</a>
     </h1>
   
 
         
-        <a href="/2021/06/17/leetcode_230/" class="archive-article-date">
+        <a href="/2021/06/17/leetcode-230/" class="archive-article-date">
   	<time datetime="2021-06-17T07:38:06.908Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
 </a>
         
@@ -394,11 +503,13 @@
 		
 
 			
-				<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Convert a sorted array into a height-balanced BST.<br>A height-balanced binary tree is a tree in which the depth of two subtrees of every node never differs by more than one.</p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><ul>
+				<h2 id="problem">Problem</h2>
+<p>Convert a sorted array into a height-balanced BST. A height-balanced binary tree is a tree in which the depth of two subtrees of every node never differs by more than one.</p>
+<h2 id="solution">Solution</h2>
+<ul>
 <li>We use the property of BST and keep counting size of left subtree. The idea is similar idea to binary search.</li>
 <li><strong>Time complexity:</strong> O(H + k). H: depth of tree</li>
-<li><strong>Space complexity:</strong> O(H + k)<h3 id="Codes-Python"><a href="#Codes-Python" class="headerlink" title="Codes - Python"></a>Codes - Python</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">kthSmallest</span>(<span class="params">self, root: TreeNode, k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        left = self.count_nodes(root.left)</span><br><span class="line">        <span class="comment"># note k is kth smallest, when k == 2, we look for index 1 in array converted from tree</span></span><br><span class="line">        <span class="keyword">if</span> left == k - <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> root.val</span><br><span class="line">        <span class="keyword">elif</span> left &gt; k - <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> self.kthSmallest(root.left, k)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> self.kthSmallest(root.right, k - left - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">count_nodes</span>(<span class="params">self, root</span>):</span></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span> </span><br><span class="line">        </span><br><span class="line">        left = self.count_nodes(root.left) </span><br><span class="line">        right = self.count_nodes(root.right)</span><br><span class="line">        <span class="keyword">return</span> left + right + <span class="number">1</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>Space complexity:</strong> O(H + k) ### Codes - Python <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">kthSmallest</span>(<span class="params">self, root: TreeNode, k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        left = self.count_nodes(root.left)</span><br><span class="line">        <span class="comment"># note k is kth smallest, when k == 2, we look for index 1 in array converted from tree</span></span><br><span class="line">        <span class="keyword">if</span> left == k - <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> root.val</span><br><span class="line">        <span class="keyword">elif</span> left &gt; k - <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> self.kthSmallest(root.left, k)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> self.kthSmallest(root.right, k - left - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">count_nodes</span>(<span class="params">self, root</span>):</span></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span> </span><br><span class="line">        </span><br><span class="line">        left = self.count_nodes(root.left) </span><br><span class="line">        right = self.count_nodes(root.right)</span><br><span class="line">        <span class="keyword">return</span> left + right + <span class="number">1</span></span><br></pre></td></tr></table></figure></li>
 </ul>
 
 			
@@ -449,7 +560,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/17/leetcode_230/">Read more... >></a>
+          <a class="article-more-a" href="/2021/06/17/leetcode-230/">Read more... >></a>
         </p>
       
 
@@ -479,19 +590,19 @@
 
 
   
-    <article id="post-leetcode_108" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-leetcode-108" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/17/leetcode_108/">Leetcode 108 - Convert Sorted Array to Binary Search Tree</a>
+      <a class="article-title" href="/2021/06/17/leetcode-108/">Leetcode 108 - Convert Sorted Array to Binary Search Tree</a>
     </h1>
   
 
         
-        <a href="/2021/06/17/leetcode_108/" class="archive-article-date">
+        <a href="/2021/06/17/leetcode-108/" class="archive-article-date">
   	<time datetime="2021-06-17T07:08:37.275Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
 </a>
         
@@ -501,13 +612,17 @@
 		
 
 			
-				<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Convert a sorted array into a height-balanced BST.<br>A height-balanced binary tree is a tree in which the depth of two subtrees of every node never differs by more than one.</p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><ul>
+				<h2 id="problem">Problem</h2>
+<p>Convert a sorted array into a height-balanced BST. A height-balanced binary tree is a tree in which the depth of two subtrees of every node never differs by more than one.</p>
+<h2 id="solution">Solution</h2>
+<ul>
 <li><strong>Backtracking:</strong> Split array at middle and construct left and right subtrees iteratively.</li>
 <li><strong>Time complexity:</strong> O(N)</li>
 <li><strong>Space complexity:</strong> O(logN)</li>
 </ul>
-<h3 id="Codes-Python"><a href="#Codes-Python" class="headerlink" title="Codes - Python"></a>Codes - Python</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sortedArrayToBST</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; TreeNode:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(nums) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        l, r = <span class="number">0</span>, <span class="built_in">len</span>(nums) - <span class="number">1</span></span><br><span class="line">        mid = l + (r - l) // <span class="number">2</span></span><br><span class="line">        left = self.sortedArrayToBST(nums[:mid])</span><br><span class="line">        right = self.sortedArrayToBST(nums[mid+<span class="number">1</span>:])</span><br><span class="line">        root = TreeNode(val = nums[mid], left=left, right=right)</span><br><span class="line">        <span class="keyword">return</span> root</span><br></pre></td></tr></table></figure>
+<h3 id="codes---python">Codes - Python</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sortedArrayToBST</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; TreeNode:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(nums) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        l, r = <span class="number">0</span>, <span class="built_in">len</span>(nums) - <span class="number">1</span></span><br><span class="line">        mid = l + (r - l) // <span class="number">2</span></span><br><span class="line">        left = self.sortedArrayToBST(nums[:mid])</span><br><span class="line">        right = self.sortedArrayToBST(nums[mid+<span class="number">1</span>:])</span><br><span class="line">        root = TreeNode(val = nums[mid], left=left, right=right)</span><br><span class="line">        <span class="keyword">return</span> root</span><br></pre></td></tr></table></figure>
+
 			
 		
     </div>
@@ -556,7 +671,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/17/leetcode_108/">Read more... >></a>
+          <a class="article-more-a" href="/2021/06/17/leetcode-108/">Read more... >></a>
         </p>
       
 
@@ -586,19 +701,19 @@
 
 
   
-    <article id="post-leetcode_98" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-leetcode-98" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/17/leetcode_98/">Leetcode 98 - Validate Binary Search Tree</a>
+      <a class="article-title" href="/2021/06/17/leetcode-98/">Leetcode 98 - Validate Binary Search Tree</a>
     </h1>
   
 
         
-        <a href="/2021/06/17/leetcode_98/" class="archive-article-date">
+        <a href="/2021/06/17/leetcode-98/" class="archive-article-date">
   	<time datetime="2021-06-17T04:54:12.336Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-17</time>
 </a>
         
@@ -608,17 +723,16 @@
 		
 
 			
-				<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Check if a given binary tree is a valid BST.<br>A valid BST is defined as </p>
+				<h2 id="problem">Problem</h2>
+<p>Check if a given binary tree is a valid BST. A valid BST is defined as - All nodes in left subtree is smaller than root - All nodes in right subtree is greater than root</p>
+<h2 id="solution">Solution</h2>
 <ul>
-<li>All nodes in left subtree is smaller than root</li>
-<li>All nodes in right subtree is greater than root</li>
-</ul>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><ul>
-<li><strong>Backtracking:</strong> Given a root node check if it’s a BST on left and right subtrees respectively. Note that we need to keep a copy of max and min of nodes’ ancestors for comparison. </li>
+<li><strong>Backtracking:</strong> Given a root node check if it's a BST on left and right subtrees respectively. Note that we need to keep a copy of max and min of nodes' ancestors for comparison.</li>
 <li><strong>Time complexity:</strong> O(N)</li>
 <li><strong>Space complexity:</strong> O(N)</li>
 </ul>
-<h3 id="Codes-Python"><a href="#Codes-Python" class="headerlink" title="Codes - Python"></a>Codes - Python</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isValidBST</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">	    <span class="comment"># Note boundary conditions: -2**32 &lt;= Node.val &lt;= 2**31-1</span></span><br><span class="line">        vmin = - <span class="number">2</span>**<span class="number">32</span></span><br><span class="line">        vmax = <span class="number">2</span>**<span class="number">32</span></span><br><span class="line">        <span class="keyword">return</span> self.validate(root, vmin, vmax)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate</span>(<span class="params">self, root, vmin, vmax</span>):</span></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">elif</span> root.val &lt;= vmin:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">elif</span> root.val &gt;= vmax:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">	        <span class="comment"># update min and max of ancestors and check if left and right subtrees are valid BST</span></span><br><span class="line">            <span class="keyword">return</span> self.validate(root.left, vmin, root.val) <span class="keyword">and</span> self.validate(root.right, root.val, vmax)</span><br></pre></td></tr></table></figure>
+<h3 id="codes---python">Codes - Python</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span> </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isValidBST</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">	    <span class="comment"># Note boundary conditions: -2**32 &lt;= Node.val &lt;= 2**31-1</span></span><br><span class="line">        vmin = - <span class="number">2</span>**<span class="number">32</span></span><br><span class="line">        vmax = <span class="number">2</span>**<span class="number">32</span></span><br><span class="line">        <span class="keyword">return</span> self.validate(root, vmin, vmax)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate</span>(<span class="params">self, root, vmin, vmax</span>):</span></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">elif</span> root.val &lt;= vmin:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">elif</span> root.val &gt;= vmax:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">	        <span class="comment"># update min and max of ancestors and check if left and right subtrees are valid BST</span></span><br><span class="line">            <span class="keyword">return</span> self.validate(root.left, vmin, root.val) <span class="keyword">and</span> self.validate(root.right, root.val, vmax)</span><br></pre></td></tr></table></figure>
 
 			
 		
@@ -668,7 +782,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/06/17/leetcode_98/">Read more... >></a>
+          <a class="article-more-a" href="/2021/06/17/leetcode-98/">Read more... >></a>
         </p>
       
 
