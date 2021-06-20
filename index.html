@@ -177,7 +177,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/06/20/ml-part2-classification/">Machine Learning - Part 1 - Classifications - Logistic Regression</a>
+      <a class="article-title" href="/2021/06/20/ml-part2-classification/">Machine Learning - Classifications - Logistic Regression</a>
     </h1>
   
 
@@ -191,12 +191,11 @@
     <div class="article-entry" itemprop="articleBody">
 		
 
-			
-				<h3 id="decision-boundary">Decision boundary</h3>
+					<h3 id="decision-boundary">Decision boundary</h3>
 <p>Below is a visual example of linear and nonlinear decision boundary. Classifiers are models that try to figure out which classes a item belongs to given the features as accurately as possible. <img src="/2021/06/20/ml-part2-classification/decision_boundary1.PNG" alt="linear-decision-boundars" /><img src="/2021/06/20/ml-part2-classification/decision_boundary2.PNG" alt="nonlinear-decision-boundary" /></p>
 <h2 id="logistic-regression">Logistic Regression</h2>
 <h3 id="model">Model</h3>
-<p>The model can be written as &gt;<span class="math display">\[h_\theta(x) = g(\theta^Tx)\]</span> <span class="math display">\[ g(z) = \frac{1}{1 + e^{-z}}\]</span> where <span class="math inline">\(g\)</span> - sigmoid function , <span class="math inline">\(\theta\)</span> - parameters for feature vector <span class="math inline">\(x\)</span></p>
+<p>The model can be written as <span class="math display">\[h_\theta(x) = g(\theta^Tx)\]</span> <span class="math display">\[ g(z) = \frac{1}{1 + e^{-z}}\]</span> where <span class="math inline">\(g\)</span> - sigmoid function , <span class="math inline">\(\theta\)</span> - parameters for feature vector <span class="math inline">\(x\)</span></p>
 <h4 id="nice-properties-of-sigmoid-function">Nice properties of sigmoid function</h4>
 <ul>
 <li>We can use it to map x in range [-inf, inf] to y in range [0, 1].</li>
@@ -211,24 +210,7 @@
 -  log(1-h_\theta(x))\text{,    if  }y=0
 \end{matrix}
 \right.
-\]</span> where i means observation i <!---more---></p>
-<h3 id="solving-parameters---gradient-descent">Solving parameters - gradient descent</h3>
-<blockquote>
-<p>Given <span class="math inline">\(J(\theta)\)</span>, we want to optimize for <span class="math inline">\(min_\theta J(\theta)\)</span> We need to derive <span class="math inline">\(-\frac{\partial}{\partial\theta_j}J(\theta)\)</span> Apply gradient descent repeatedly until convergence <span class="math inline">\(\theta\)</span> <span class="math display">\[\theta_j :=  \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta)\]</span> where <span class="math inline">\(\alpha\)</span> is learning rate We use chain rule, the gradient update is <span class="math inline">\(\theta\)</span> <span class="math display">\[\theta_j :=  \theta_j - \alpha\frac{1}{m}\sum\limits_{i=1}^m(h_\theta(x^i) - y^i)x_j^{i}\]</span> where i means observation i, j means j-th element in parameter vector <span class="math inline">\(\theta\)</span></p>
-</blockquote>
-<h3 id="extend-to-multi-class">Extend to multi-class</h3>
-<p>Treat the problem as 'one-vs-all' and solve as binary classification</p>
-<h3 id="regularization">Regularization</h3>
-<p>When the model overfits, it tends to update parameters in a way that it caters to certain outliers as show in the decision <img src="/2021/06/20/ml-part2-classification/decision_boundary.PNG" alt="linear-decision-boundary" /></p>
-<p>As a result, parameters become polarized at certain dimensions. Adding a penalty on the variance of parameters, we reduce impact of overfitting. &gt; The loss function becomes <span class="math display">\[ J(\theta) = \frac{1}{m}\sum\limits_{i=1}^m[-y^ilog(h_\theta(x^i)) - (1 - y^i)log(1-h_\theta(x^i))] + \frac{\lambda}{2m}\sum\limits_{j=1}^m\theta_j^2\]</span> where L2 penalty term is <span class="math inline">\(\frac{\lambda}{2m}\sum\limits_{j=1}^m\theta_j^2\)</span></p>
-<h3 id="codes">Codes</h3>
-<p>We use example of Iris dataset in sklearn <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line">X, y = load_iris(return_X_y=<span class="literal">True</span>)</span><br><span class="line">clf = LogisticRegression(random_state=<span class="number">0</span>).fit(X, y)</span><br><span class="line">clf.predict(X[:<span class="number">2</span>, :])</span><br><span class="line">clf.predict_proba(X[:<span class="number">2</span>, :])</span><br><span class="line">clf.score(X, y)</span><br></pre></td></tr></table></figure></p>
-<h4 id="reference">Reference</h4>
-<ul>
-<li>Stanford machine learning course, http://www.ai-start.com/ml2014/html/week3.html</li>
-<li>Sklearn, https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html</li>
-</ul>
-
+\]</span> where i means observation i
 			
 		
     </div>
@@ -945,11 +927,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Leetcode-Medium</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BFS</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BFS</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Leetcode-Medium</a>
         		</li>
       		
 		</ul>
@@ -1042,11 +1024,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Leetcode-Medium</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BFS</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">BFS</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Leetcode-Medium</a>
         		</li>
       		
 		</ul>
@@ -1119,17 +1101,9 @@
 		
 
 			
-				<h2 id="dfs-binary-search-tree-bst"><a class="markdownIt-Anchor" href="#dfs-binary-search-tree-bst"></a> DFS - Binary Search Tree (BST)</h2>
-<p><strong>keywords:</strong>  Backtracking, InOrder/PreOrder/PostOrder traversal</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_98/">Validate Binary Search Tree</a></li>
-<li><a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_108/">Convert Sorted Array to Binary Search Tree</a></li>
-<li><a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_108/">Kth Smallest element in a BST</a></li>
-<li><a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_235/">Lowest Common Ancestor of a Binary Search Tree</a></li>
-<li><a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_669/">Trim a Binary Search Tree</a></li>
-<li><a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_700/">Search Range in Binary Search Tree</a></li>
-</ul>
-<h2 id="dfs-combinations"><a class="markdownIt-Anchor" href="#dfs-combinations"></a> DFS - Combinations</h2>
+				<h2 id="dfs---binary-search-tree-bst">DFS - Binary Search Tree (BST)</h2>
+<p><strong>keywords:</strong> Backtracking, InOrder/PreOrder/PostOrder traversal - <a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_98/">Validate Binary Search Tree</a> - <a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_108/">Convert Sorted Array to Binary Search Tree</a> - <a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_108/">Kth Smallest element in a BST</a> - <a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_235/">Lowest Common Ancestor of a Binary Search Tree</a> - <a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_669/">Trim a Binary Search Tree</a> - <a target="_blank" rel="noopener" href="https://ozhong.github.io/2021/06/17/leetcode_700/">Search Range in Binary Search Tree</a></p>
+<h2 id="dfs---combinations">DFS - Combinations</h2>
 
 			
 		
