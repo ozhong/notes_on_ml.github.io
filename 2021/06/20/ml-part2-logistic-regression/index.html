@@ -6,15 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Category: classification | OZ&#39;s notes on Machine Learning</title>
+  <title>Machine Learning - Classifications - Logistic Regression | OZ&#39;s notes on Machine Learning</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="OZ&#39;s notes on Machine Learning">
-<meta property="og:url" content="http://example.com/categories/machinelearning/classification/index.html">
+  <meta name="description" content="Decision boundary Below is a visual example of linear and nonlinear decision boundary. Classifiers are models that try to figure out which classes a item belongs to given the features as accurately a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Machine Learning - Classifications - Logistic Regression">
+<meta property="og:url" content="http://example.com/2021/06/20/ml-part2-logistic-regression/index.html">
 <meta property="og:site_name" content="OZ&#39;s notes on Machine Learning">
+<meta property="og:description" content="Decision boundary Below is a visual example of linear and nonlinear decision boundary. Classifiers are models that try to figure out which classes a item belongs to given the features as accurately a">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2021/06/20/ml-part2-logistic-regression/decision_boundary1.png">
+<meta property="og:image" content="http://example.com/2021/06/20/ml-part2-logistic-regression/decision_boundary2.png">
+<meta property="og:image" content="http://example.com/2021/06/20/ml-part2-logistic-regression/sigmoid.png">
+<meta property="og:image" content="http://example.com/2021/06/20/ml-part2-logistic-regression/decision_boundary.png">
+<meta property="article:published_time" content="2021-06-20T03:34:36.181Z">
+<meta property="article:modified_time" content="2021-06-20T08:38:54.909Z">
 <meta property="article:author" content="OZ">
+<meta property="article:tag" content="classification">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/06/20/ml-part2-logistic-regression/decision_boundary1.png">
   
     <link rel="alternative" href="/atom.xml" title="OZ&#39;s notes on Machine Learning" type="application/atom+xml">
   
@@ -168,93 +178,71 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-ml-part2-logistic-regression" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/20/ml-part3-svm/" class="archive-article-date">
-  	<time datetime="2021-06-20T07:05:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-20</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/20/ml-part3-svm/">Machine Learning - Classification - Support Vector Machines</a>
+    <h1 class="article-title" itemprop="name">
+      Machine Learning - Classifications - Logistic Regression
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">classification</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">svm</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machinelearning//" class="article-tag-list-link color1">machinelearning</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machinelearning/classification//" class="article-tag-list-link color5">classification</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/06/20/ml-part2-logistic-regression/" class="archive-article-date">
+        
+        <a href="/2021/06/20/ml-part2-logistic-regression/" class="archive-article-date">
   	<time datetime="2021-06-20T03:34:36.181Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-20</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/06/20/ml-part2-logistic-regression/">Machine Learning - Classifications - Logistic Regression</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+		
 
-        <div class="article-info info-on-right">
-          
+			
+				<h3 id="decision-boundary">Decision boundary</h3>
+<p>Below is a visual example of linear and nonlinear decision boundary. Classifiers are models that try to figure out which classes a item belongs to given the features as accurately as possible. <img src="/2021/06/20/ml-part2-logistic-regression/decision_boundary1.png" alt="linear-decision-boundars" /><img src="/2021/06/20/ml-part2-logistic-regression/decision_boundary2.png" alt="nonlinear-decision-boundary" /></p>
+<h2 id="logistic-regression">Logistic Regression</h2>
+<h3 id="model">Model</h3>
+<p>The model can be written as <span class="math display">\[h_\theta(x) = g(\theta^Tx)\]</span> <span class="math display">\[ g(z) = \frac{1}{1 + e^{-z}}\]</span> where <span class="math inline">\(g\)</span> - sigmoid function , <span class="math inline">\(\theta\)</span> - parameters for feature vector <span class="math inline">\(x\)</span></p>
+<h4 id="nice-properties-of-sigmoid-function">Nice properties of sigmoid function</h4>
+<ul>
+<li>We can use it to map x in range [-inf, inf] to y in range [0, 1].</li>
+<li><img src="/2021/06/20/ml-part2-logistic-regression/sigmoid.png" alt="sigmoid-function" /></li>
+<li>Gradient <span class="math inline">\(g^{&#39;}(x) = g(x) * (1- g(x))\)</span></li>
+<li>Thus by chain rule <span class="math inline">\(\frac{\partial}{\partial x}log(g(x))= (1- g(x))\)</span></li>
+</ul>
+<h3 id="loss-function">Loss function</h3>
+<p><span class="math display">\[J(\theta) = \frac{1}{m} \sum\limits_{i=1}^mLoss(h_\theta(x^i, y^i))\]</span> <span class="math display">\[Loss(h_\theta(x, y))=\left\{
+\begin{matrix}
+- log(h_\theta(x))\text{,         if  }y=1\\
+-  log(1-h_\theta(x))\text{,    if  }y=0
+\end{matrix}
+\right.
+\]</span> where i means observation i <span id="more"></span></p>
+<h3 id="solving-parameters---gradient-descent">Solving parameters - gradient descent</h3>
+<blockquote>
+<p>Given <span class="math inline">\(J(\theta)\)</span>, we want to optimize for <span class="math inline">\(min_\theta J(\theta)\)</span> We need to derive <span class="math inline">\(-\frac{\partial}{\partial\theta_j}J(\theta)\)</span> Apply gradient descent repeatedly until convergence <span class="math inline">\(\theta\)</span> <span class="math display">\[\theta_j :=  \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta)\]</span> where <span class="math inline">\(\alpha\)</span> is learning rate We use chain rule, the gradient update is <span class="math inline">\(\theta\)</span> <span class="math display">\[\theta_j :=  \theta_j - \alpha\frac{1}{m}\sum\limits_{i=1}^m(h_\theta(x^i) - y^i)x_j^{i}\]</span> where i means observation i, j means j-th element in parameter vector <span class="math inline">\(\theta\)</span></p>
+</blockquote>
+<h3 id="extend-to-multi-class">Extend to multi-class</h3>
+<p>Treat the problem as 'one-vs-all' and solve as binary classification</p>
+<h3 id="regularization">Regularization</h3>
+<p>When the model overfits, it tends to update parameters in a way that it caters to certain outliers as show in the decision boundary below <img src="/2021/06/20/ml-part2-logistic-regression/decision_boundary.png" alt="linear-decision-boundary" /></p>
+<p>As a result, parameters become polarized at certain dimensions. Adding a penalty on the variance of parameters, we reduce impact of overfitting. &gt; The loss function becomes <span class="math display">\[ J(\theta) = \frac{1}{m}\sum\limits_{i=1}^m[-y^ilog(h_\theta(x^i)) - (1 - y^i)log(1-h_\theta(x^i))] + \frac{\lambda}{2m}\sum\limits_{j=1}^m\theta_j^2\]</span> where L2 penalty term is <span class="math inline">\(\frac{\lambda}{2m}\sum\limits_{j=1}^m\theta_j^2\)</span></p>
+<h3 id="codes">Codes</h3>
+<p>We use example of Iris dataset in sklearn <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line">X, y = load_iris(return_X_y=<span class="literal">True</span>)</span><br><span class="line">clf = LogisticRegression(random_state=<span class="number">0</span>).fit(X, y)</span><br><span class="line">clf.predict(X[:<span class="number">2</span>, :])</span><br><span class="line">clf.predict_proba(X[:<span class="number">2</span>, :])</span><br><span class="line">clf.score(X, y)</span><br></pre></td></tr></table></figure></p>
+<h4 id="reference">Reference</h4>
+<ul>
+<li>Stanford machine learning course, http://www.ai-start.com/ml2014/html/week3.html</li>
+<li>Sklearn, https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html</li>
+</ul>
+
+			
+		
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -266,7 +254,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -287,17 +275,75 @@
 	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2021/06/20/ml-part3-svm/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Machine Learning - Classification - Support Vector Machines
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2021/06/19/ml-part1-basic-concepts/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Machine Learning - Part 1 - Basic Concepts</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#decision-boundary"><span class="toc-number">1.</span> <span class="toc-text">Decision boundary</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#logistic-regression"><span class="toc-number"></span> <span class="toc-text">Logistic Regression</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#model"><span class="toc-number">1.</span> <span class="toc-text">Model</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice-properties-of-sigmoid-function"><span class="toc-number">1.1.</span> <span class="toc-text">Nice properties of sigmoid function</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#loss-function"><span class="toc-number">2.</span> <span class="toc-text">Loss function</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#solving-parameters---gradient-descent"><span class="toc-number">3.</span> <span class="toc-text">Solving parameters - gradient descent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#extend-to-multi-class"><span class="toc-number">4.</span> <span class="toc-text">Extend to multi-class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#regularization"><span class="toc-number">5.</span> <span class="toc-text">Regularization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#codes"><span class="toc-number">6.</span> <span class="toc-text">Codes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#reference"><span class="toc-number">6.1.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -320,10 +366,10 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",

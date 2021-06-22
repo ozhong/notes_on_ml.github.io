@@ -6,25 +6,27 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Machine Learning - Classifications - Logistic Regression | OZ&#39;s notes on Machine Learning</title>
+  <title>Machine Learning - Classification - Support Vector Machines | OZ&#39;s notes on Machine Learning</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Decision boundary Below is a visual example of linear and nonlinear decision boundary. Classifiers are models that try to figure out which classes a item belongs to given the features as accurately a">
+  <meta name="description" content="Support Vector Machines Model The idea of SVM is to find a seperating hyperplane defined by \(wx - b &#x3D;0\), where \(w\) is a normal vector and \(b\) is a scalar offset. \(w\) has the same dimension a">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Machine Learning - Classifications - Logistic Regression">
-<meta property="og:url" content="http://example.com/2021/06/20/ml-part2-classification/index.html">
+<meta property="og:title" content="Machine Learning - Classification - Support Vector Machines">
+<meta property="og:url" content="http://example.com/2021/06/20/ml-part3-svm/index.html">
 <meta property="og:site_name" content="OZ&#39;s notes on Machine Learning">
-<meta property="og:description" content="Decision boundary Below is a visual example of linear and nonlinear decision boundary. Classifiers are models that try to figure out which classes a item belongs to given the features as accurately a">
+<meta property="og:description" content="Support Vector Machines Model The idea of SVM is to find a seperating hyperplane defined by \(wx - b &#x3D;0\), where \(w\) is a normal vector and \(b\) is a scalar offset. \(w\) has the same dimension a">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2021/06/20/ml-part2-classification/decision_boundary1.PNG">
-<meta property="og:image" content="http://example.com/2021/06/20/ml-part2-classification/decision_boundary2.PNG">
-<meta property="og:image" content="http://example.com/2021/06/20/ml-part2-classification/sigmoid.PNG">
-<meta property="og:image" content="http://example.com/2021/06/20/ml-part2-classification/decision_boundary.PNG">
-<meta property="article:published_time" content="2021-06-20T03:34:36.181Z">
-<meta property="article:modified_time" content="2021-06-20T05:13:32.142Z">
+<meta property="og:image" content="http://example.com/2021/06/20/ml-part3-svm/svm.PNG">
+<meta property="og:image" content="http://example.com/2021/06/20/ml-part3-svm/svm_loss.PNG">
+<meta property="og:image" content="http://example.com/2021/06/20/ml-part3-svm/hinge_loss.PNG">
+<meta property="og:image" content="http://example.com/2021/06/20/ml-part3-svm/svm_gd.PNG">
+<meta property="og:image" content="http://example.com/2021/06/20/ml-part3-svm/svm_compare.PNG">
+<meta property="article:published_time" content="2021-06-20T07:05:49.000Z">
+<meta property="article:modified_time" content="2021-06-20T08:50:50.827Z">
 <meta property="article:author" content="OZ">
 <meta property="article:tag" content="classification">
+<meta property="article:tag" content="svm">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2021/06/20/ml-part2-classification/decision_boundary1.PNG">
+<meta name="twitter:image" content="http://example.com/2021/06/20/ml-part3-svm/svm.PNG">
   
     <link rel="alternative" href="/atom.xml" title="OZ&#39;s notes on Machine Learning" type="application/atom+xml">
   
@@ -178,20 +180,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-ml-part2-classification" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-ml-part3-svm" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Machine Learning - Classifications - Logistic Regression
+      Machine Learning - Classification - Support Vector Machines
     </h1>
   
 
         
-        <a href="/2021/06/20/ml-part2-classification/" class="archive-article-date">
-  	<time datetime="2021-06-20T03:34:36.181Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-20</time>
+        <a href="/2021/06/20/ml-part3-svm/" class="archive-article-date">
+  	<time datetime="2021-06-20T07:05:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-20</time>
 </a>
         
       </header>
@@ -200,41 +202,36 @@
 		
 
 			
-				<h3 id="decision-boundary">Decision boundary</h3>
-<p>Below is a visual example of linear and nonlinear decision boundary. Classifiers are models that try to figure out which classes a item belongs to given the features as accurately as possible. <img src="/2021/06/20/ml-part2-classification/decision_boundary1.PNG" alt="linear-decision-boundars" /><img src="/2021/06/20/ml-part2-classification/decision_boundary2.PNG" alt="nonlinear-decision-boundary" /></p>
-<h2 id="logistic-regression">Logistic Regression</h2>
+				<h2 id="support-vector-machines">Support Vector Machines</h2>
 <h3 id="model">Model</h3>
-<p>The model can be written as <span class="math display">\[h_\theta(x) = g(\theta^Tx)\]</span> <span class="math display">\[ g(z) = \frac{1}{1 + e^{-z}}\]</span> where <span class="math inline">\(g\)</span> - sigmoid function , <span class="math inline">\(\theta\)</span> - parameters for feature vector <span class="math inline">\(x\)</span></p>
-<h4 id="nice-properties-of-sigmoid-function">Nice properties of sigmoid function</h4>
-<ul>
-<li>We can use it to map x in range [-inf, inf] to y in range [0, 1].</li>
-<li><img src="/2021/06/20/ml-part2-classification/sigmoid.PNG" alt="sigmoid-function" /></li>
-<li>Gradient <span class="math inline">\(g^{&#39;}(x) = g(x) * (1- g(x))\)</span></li>
-<li>Thus by chain rule <span class="math inline">\(\frac{\partial}{\partial x}log(g(x))= (1- g(x))\)</span></li>
-</ul>
+<p>The idea of SVM is to find a seperating hyperplane defined by <span class="math inline">\(wx - b =0\)</span>, where <span class="math inline">\(w\)</span> is a normal vector and <span class="math inline">\(b\)</span> is a scalar offset. <span class="math inline">\(w\)</span> has the same dimension as feature vector <span class="math inline">\(x\)</span>. For each <span class="math inline">\(x\)</span>, we want <span class="math inline">\(wx - b &gt; 1\)</span> if <span class="math inline">\(y\)</span> is <span class="math inline">\(+1\)</span>, and <span class="math inline">\(wx - b &lt; -1\)</span> if <span class="math inline">\(y\)</span> is <span class="math inline">\(-1\)</span>. Two conditions can be combined into <span class="math inline">\(y(wx - b)&gt;1\)</span>. <img src="/2021/06/20/ml-part3-svm/svm.PNG" /></p>
+<span id="more"></span>
 <h3 id="loss-function">Loss function</h3>
-<p><span class="math display">\[J(\theta) = \frac{1}{m} \sum\limits_{i=1}^mLoss(h_\theta(x^i, y^i))\]</span> <span class="math display">\[Loss(h_\theta(x, y))=\left\{
-\begin{matrix}
-- log(h_\theta(x))\text{,         if  }y=1\\
--  log(1-h_\theta(x))\text{,    if  }y=0
-\end{matrix}
-\right.
-\]</span> where i means observation i <span id="more"></span></p>
-<h3 id="solving-parameters---gradient-descent">Solving parameters - gradient descent</h3>
-<blockquote>
-<p>Given <span class="math inline">\(J(\theta)\)</span>, we want to optimize for <span class="math inline">\(min_\theta J(\theta)\)</span> We need to derive <span class="math inline">\(-\frac{\partial}{\partial\theta_j}J(\theta)\)</span> Apply gradient descent repeatedly until convergence <span class="math inline">\(\theta\)</span> <span class="math display">\[\theta_j :=  \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta)\]</span> where <span class="math inline">\(\alpha\)</span> is learning rate We use chain rule, the gradient update is <span class="math inline">\(\theta\)</span> <span class="math display">\[\theta_j :=  \theta_j - \alpha\frac{1}{m}\sum\limits_{i=1}^m(h_\theta(x^i) - y^i)x_j^{i}\]</span> where i means observation i, j means j-th element in parameter vector <span class="math inline">\(\theta\)</span></p>
-</blockquote>
-<h3 id="extend-to-multi-class">Extend to multi-class</h3>
-<p>Treat the problem as 'one-vs-all' and solve as binary classification</p>
-<h3 id="regularization">Regularization</h3>
-<p>When the model overfits, it tends to update parameters in a way that it caters to certain outliers as show in the decision boundary below <img src="/2021/06/20/ml-part2-classification/decision_boundary.PNG" alt="linear-decision-boundary" /></p>
-<p>As a result, parameters become polarized at certain dimensions. Adding a penalty on the variance of parameters, we reduce impact of overfitting. &gt; The loss function becomes <span class="math display">\[ J(\theta) = \frac{1}{m}\sum\limits_{i=1}^m[-y^ilog(h_\theta(x^i)) - (1 - y^i)log(1-h_\theta(x^i))] + \frac{\lambda}{2m}\sum\limits_{j=1}^m\theta_j^2\]</span> where L2 penalty term is <span class="math inline">\(\frac{\lambda}{2m}\sum\limits_{j=1}^m\theta_j^2\)</span></p>
-<h3 id="codes">Codes</h3>
-<p>We use example of Iris dataset in sklearn <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line">X, y = load_iris(return_X_y=<span class="literal">True</span>)</span><br><span class="line">clf = LogisticRegression(random_state=<span class="number">0</span>).fit(X, y)</span><br><span class="line">clf.predict(X[:<span class="number">2</span>, :])</span><br><span class="line">clf.predict_proba(X[:<span class="number">2</span>, :])</span><br><span class="line">clf.score(X, y)</span><br></pre></td></tr></table></figure></p>
+<p>with hard constraints: <span class="math display">\[min_w \frac{1}{2}||w||^2\text{,     s.t. } y_i(w x_i + b) &gt;= 1 \text{       for all i} \]</span> with slack variable <span class="math display">\[min_w \frac{1}{2}||w||^2 + C*\sum\limits_{i=1}^n\xi_i\text{,     s.t. } y_i(w x_i + b) &gt;= 1-\xi_i \text{       for all i} \]</span> if points on the wrong side the get penalty 'natural' form</p>
+<p><img src="/2021/06/20/ml-part3-svm/svm_loss.PNG" /></p>
+<p>it uses Hinge loss</p>
+<p><img src="/2021/06/20/ml-part3-svm/hinge_loss.PNG" /></p>
+<h3 id="how-to-estimate-w">How to estimate <span class="math inline">\(w\)</span></h3>
+<ul>
+<li>standard way: use a solver</li>
+<li>Gradient descent - its much faster with large dataset</li>
+</ul>
+<p><img src="/2021/06/20/ml-part3-svm/svm_gd.PNG" /></p>
+<h3 id="example">Example</h3>
+<p>Given n = 871,000 training documents, 23000 test examples d = 50,000 features</p>
+<p><img src="/2021/06/20/ml-part3-svm/svm_compare.PNG" /></p>
+<h3 id="additional-notes">Additional notes</h3>
+<ul>
+<li>Works for linear and nonlinear seperable dataset given different kernels</li>
+<li>Only support vectors are used for inference, efficient memory use. Changes in training data which are support vectors have no impact in model.</li>
+<li>Doesn't scale to massive dataset</li>
+<li>No prediction probabilty</li>
+<li>Doesn't work well with multi-class problems</li>
+</ul>
 <h4 id="reference">Reference</h4>
 <ul>
-<li>Stanford machine learning course, http://www.ai-start.com/ml2014/html/week3.html</li>
-<li>Sklearn, https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html</li>
+<li>CS246 Mining Massive Datasets, http://snap.stanford.edu/class/cs246-2020/</li>
+<li>SVM linear kernel with Pytorch, https://bytepawn.com/svm-with-pytorch.html</li>
 </ul>
 
 			
@@ -249,6 +246,10 @@
 			 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">classification</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">svm</a>
         		</li>
       		
 		</ul>
@@ -265,10 +266,6 @@
       		 
         		<li class="article-tag-list-item">
         			<a href="/categories/machinelearning/classification//" class="article-tag-list-link color5">classification</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machinelearning/classification/supervised-models//" class="article-tag-list-link color3">supervised_models</a>
         		</li>
       		
 		</ul>
@@ -287,8 +284,8 @@
 <nav id="article-nav">
   
   
-    <a href="/2021/06/19/ml-part1-basic-concepts/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Machine Learning - Part 1 - Basic Concepts</div>
+    <a href="/2021/06/20/ml-part2-logistic-regression/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Machine Learning - Classifications - Logistic Regression</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -315,7 +312,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#decision-boundary"><span class="toc-number">1.</span> <span class="toc-text">Decision boundary</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#logistic-regression"><span class="toc-number"></span> <span class="toc-text">Logistic Regression</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#model"><span class="toc-number">1.</span> <span class="toc-text">Model</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice-properties-of-sigmoid-function"><span class="toc-number">1.1.</span> <span class="toc-text">Nice properties of sigmoid function</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#loss-function"><span class="toc-number">2.</span> <span class="toc-text">Loss function</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#solving-parameters---gradient-descent"><span class="toc-number">3.</span> <span class="toc-text">Solving parameters - gradient descent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#extend-to-multi-class"><span class="toc-number">4.</span> <span class="toc-text">Extend to multi-class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#regularization"><span class="toc-number">5.</span> <span class="toc-text">Regularization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#codes"><span class="toc-number">6.</span> <span class="toc-text">Codes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#reference"><span class="toc-number">6.1.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#support-vector-machines"><span class="toc-number">1.</span> <span class="toc-text">Support Vector Machines</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#model"><span class="toc-number">1.1.</span> <span class="toc-text">Model</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#loss-function"><span class="toc-number">1.2.</span> <span class="toc-text">Loss function</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#how-to-estimate-w"><span class="toc-number">1.3.</span> <span class="toc-text">How to estimate \(w\)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#example"><span class="toc-number">1.4.</span> <span class="toc-text">Example</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#additional-notes"><span class="toc-number">1.5.</span> <span class="toc-text">Additional notes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#reference"><span class="toc-number">1.5.1.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
