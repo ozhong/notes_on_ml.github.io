@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://example.com/2021/06/20/ml-part2-logistic-regression/sigmoid.png">
 <meta property="og:image" content="http://example.com/2021/06/20/ml-part2-logistic-regression/decision_boundary.png">
 <meta property="article:published_time" content="2021-06-20T03:34:36.181Z">
-<meta property="article:modified_time" content="2021-06-20T08:38:54.909Z">
+<meta property="article:modified_time" content="2021-06-20T08:51:36.771Z">
 <meta property="article:author" content="OZ">
 <meta property="article:tag" content="classification">
 <meta name="twitter:card" content="summary">
@@ -201,10 +201,7 @@
 
 			
 				<h3 id="decision-boundary">Decision boundary</h3>
-<p>Below is a visual example of linear and nonlinear decision boundary. Classifiers are models that try to figure out which classes a item belongs to given the features as accurately as possible. <img src="/2021/06/20/ml-part2-logistic-regression/decision_boundary1.png" alt="linear-decision-boundars" /><img src="/2021/06/20/ml-part2-logistic-regression/decision_boundary2.png" alt="nonlinear-decision-boundary" /></p>
-<h2 id="logistic-regression">Logistic Regression</h2>
-<h3 id="model">Model</h3>
-<p>The model can be written as <span class="math display">\[h_\theta(x) = g(\theta^Tx)\]</span> <span class="math display">\[ g(z) = \frac{1}{1 + e^{-z}}\]</span> where <span class="math inline">\(g\)</span> - sigmoid function , <span class="math inline">\(\theta\)</span> - parameters for feature vector <span class="math inline">\(x\)</span></p>
+<p>Below is a visual example of linear and nonlinear decision boundary. Classifiers are models that try to figure out which classes a item belongs to given the features as accurately as possible. <img src="/2021/06/20/ml-part2-logistic-regression/decision_boundary1.png" alt="linear-decision-boundars" /><img src="/2021/06/20/ml-part2-logistic-regression/decision_boundary2.png" alt="nonlinear-decision-boundary" /> <span id="more"></span> ## Logistic Regression ### Model The model can be written as <span class="math display">\[h_\theta(x) = g(\theta^Tx)\]</span> <span class="math display">\[ g(z) = \frac{1}{1 + e^{-z}}\]</span> where <span class="math inline">\(g\)</span> - sigmoid function , <span class="math inline">\(\theta\)</span> - parameters for feature vector <span class="math inline">\(x\)</span></p>
 <h4 id="nice-properties-of-sigmoid-function">Nice properties of sigmoid function</h4>
 <ul>
 <li>We can use it to map x in range [-inf, inf] to y in range [0, 1].</li>
@@ -219,7 +216,7 @@
 -  log(1-h_\theta(x))\text{,    if  }y=0
 \end{matrix}
 \right.
-\]</span> where i means observation i <span id="more"></span></p>
+\]</span> where i means observation i</p>
 <h3 id="solving-parameters---gradient-descent">Solving parameters - gradient descent</h3>
 <blockquote>
 <p>Given <span class="math inline">\(J(\theta)\)</span>, we want to optimize for <span class="math inline">\(min_\theta J(\theta)\)</span> We need to derive <span class="math inline">\(-\frac{\partial}{\partial\theta_j}J(\theta)\)</span> Apply gradient descent repeatedly until convergence <span class="math inline">\(\theta\)</span> <span class="math display">\[\theta_j :=  \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta)\]</span> where <span class="math inline">\(\alpha\)</span> is learning rate We use chain rule, the gradient update is <span class="math inline">\(\theta\)</span> <span class="math display">\[\theta_j :=  \theta_j - \alpha\frac{1}{m}\sum\limits_{i=1}^m(h_\theta(x^i) - y^i)x_j^{i}\]</span> where i means observation i, j means j-th element in parameter vector <span class="math inline">\(\theta\)</span></p>
@@ -324,7 +321,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#decision-boundary"><span class="toc-number">1.</span> <span class="toc-text">Decision boundary</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#logistic-regression"><span class="toc-number"></span> <span class="toc-text">Logistic Regression</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#model"><span class="toc-number">1.</span> <span class="toc-text">Model</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice-properties-of-sigmoid-function"><span class="toc-number">1.1.</span> <span class="toc-text">Nice properties of sigmoid function</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#loss-function"><span class="toc-number">2.</span> <span class="toc-text">Loss function</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#solving-parameters---gradient-descent"><span class="toc-number">3.</span> <span class="toc-text">Solving parameters - gradient descent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#extend-to-multi-class"><span class="toc-number">4.</span> <span class="toc-text">Extend to multi-class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#regularization"><span class="toc-number">5.</span> <span class="toc-text">Regularization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#codes"><span class="toc-number">6.</span> <span class="toc-text">Codes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#reference"><span class="toc-number">6.1.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#decision-boundary"><span class="toc-number">1.</span> <span class="toc-text">Decision boundary</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#nice-properties-of-sigmoid-function"><span class="toc-number">1.1.</span> <span class="toc-text">Nice properties of sigmoid function</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#loss-function"><span class="toc-number">2.</span> <span class="toc-text">Loss function</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#solving-parameters---gradient-descent"><span class="toc-number">3.</span> <span class="toc-text">Solving parameters - gradient descent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#extend-to-multi-class"><span class="toc-number">4.</span> <span class="toc-text">Extend to multi-class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#regularization"><span class="toc-number">5.</span> <span class="toc-text">Regularization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#codes"><span class="toc-number">6.</span> <span class="toc-text">Codes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#reference"><span class="toc-number">6.1.</span> <span class="toc-text">Reference</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
